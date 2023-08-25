@@ -1,0 +1,24 @@
+{
+  "name": "jsapi-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "VITE_MODE=production npm run dev",
+    "dev": "VITE_MODE=development vite",
+    "build": "VITE_MODE=production vite build",
+    "preview": "VITE_MODE=development vite preview"
+  },
+  "dependencies": {
+    "@arcgis/core": "~4.27.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.3.9"
+  }
+}
