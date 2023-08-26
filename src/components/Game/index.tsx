@@ -30,9 +30,6 @@ function display(view: SceneView) {
     },
     material: new MeshMaterial({
       color: color(undefined, 0.9),
-      colorTexture: {
-        url: './src/static/textures/water.png',
-      },
     }),
   });
 
