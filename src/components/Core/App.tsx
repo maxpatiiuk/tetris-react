@@ -6,6 +6,7 @@ import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
 import { expose } from '../../utils/utils';
 
 import './App.css';
+import { Game } from '../Game';
 
 export function App() {
   const mapDiv = useRef(null);
@@ -16,7 +17,6 @@ export function App() {
       /**
        * Initialize application
        */
-      // TODO: try out cartoonish map too. https://developers.arcgis.com/rest/basemap-styles/#arcgis-styles
       const map = new Map({
         basemap: new Basemap({
           portalItem: {
@@ -24,18 +24,6 @@ export function App() {
           },
         }),
       });
-      /*
-import SceneLayer from '@arcgis/core/layers/SceneLayer';
-import PortalItem from '@arcgis/core/portal/PortalItem';
-      const layer = new SceneLayer({
-        portalItem: new PortalItem({
-          id: '2e0761b9a4274b8db52c4bf34356911e',
-        }),
-      });
-      const map = new Map({
-        basemap: 'satellite',
-        layers: [layer],
-      });*/
 
       const view = new SceneView({
         container: mapDiv.current,
@@ -53,28 +41,20 @@ import PortalItem from '@arcgis/core/portal/PortalItem';
           },
         },
         // TODO: make this go around in circle
-        /*camera: {
+
+        camera: {
           position: {
             spatialReference: {
               wkid: 102100,
             },
-            x: -8238801.332498223,
-            y: 4966545.783432331,
-            z: 922.5304415896535,
+            x: -8238079.531665886,
+            y: 4967241.460219243,
+            z: 391.0542051009834,
           },
-          heading: 355.34945708849745,
-          tilt: 63.929760641832004,
-        },*/
-
-        camera: {
-          position: {
-            longitude: -74.03423765,
-            latitude: 40.69173202,
-            z: 1620.71497,
-          },
-          heading: 57.02,
-          tilt: 56.97,
+          heading: 308.6684617741516,
+          tilt: 80.17317239793229,
         },
+        qualityProfile: 'high',
       });
 
       view.when(() => {
@@ -86,5 +66,9 @@ import PortalItem from '@arcgis/core/portal/PortalItem';
     }
   }, []);
 
-  return <div className="mapDiv" ref={mapDiv}></div>;
+  return (
+    <div className="mapDiv" ref={mapDiv}>
+      {view && <Game view={view} />}
+    </div>
+  );
 }
