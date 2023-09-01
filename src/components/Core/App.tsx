@@ -4,10 +4,10 @@ import Basemap from '@arcgis/core/Basemap';
 import Map from '@arcgis/core/Map';
 import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
 import { expose } from '../../utils/utils';
-import { cameraMesh } from '../Game/camera';
+import { cameraMesh } from '../Rendering/camera';
 
 import './App.css';
-import { startMovement } from '../Game';
+import { startMovement } from '../Rendering';
 
 export function App() {
   const mapDiv = useRef(null);
