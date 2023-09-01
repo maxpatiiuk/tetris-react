@@ -14,16 +14,17 @@ export function computeOffsets(
   const offsetMagnitudeX = perpendicularOne(direction);
   const offsetMagnitudeZ = perpendicularTwo(direction, offsetMagnitudeX);
 
+  const size = blockSize * 5;
   return new Point({
     x:
-      offsetMagnitudeX.x * offsetBlocksX * blockSize +
-      offsetMagnitudeZ.x * offsetBlocksY * blockSize,
+      offsetMagnitudeX.x * offsetBlocksX * size +
+      offsetMagnitudeZ.x * offsetBlocksY * size,
     y:
-      offsetMagnitudeX.y * offsetBlocksX * blockSize +
-      offsetMagnitudeZ.y * offsetBlocksY * blockSize,
+      offsetMagnitudeX.y * offsetBlocksX * size +
+      offsetMagnitudeZ.y * offsetBlocksY * size,
     z:
-      offsetMagnitudeX.z * offsetBlocksX * blockSize +
-      offsetMagnitudeZ.z * offsetBlocksY * blockSize,
+      offsetMagnitudeX.z * offsetBlocksX * size +
+      offsetMagnitudeZ.z * offsetBlocksY * size,
   });
 }
 

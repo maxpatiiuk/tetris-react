@@ -1,7 +1,7 @@
 import SceneView from '@arcgis/core/views/SceneView';
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
-import { expose } from '../../utils/utils';
+import { expose } from '../../lib/utils';
 import { rotateCamera } from './camera';
 import { displayBox, rotateGraphic } from './box';
 

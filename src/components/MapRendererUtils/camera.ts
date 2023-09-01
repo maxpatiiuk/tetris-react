@@ -1,6 +1,6 @@
 import Point from '@arcgis/core/geometry/Point';
 import Mesh from '@arcgis/core/geometry/Mesh';
-import { expose } from '../../utils/utils';
+import { expose } from '../../lib/utils';
 import Camera from '@arcgis/core/Camera';
 import SceneView from '@arcgis/core/views/SceneView';
 
