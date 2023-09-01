@@ -12,6 +12,10 @@ import Color from '@arcgis/core/Color';
 import { cameraMesh, centerPoint } from '../Game/camera';
 import Mesh from '@arcgis/core/geometry/Mesh';
 
+const second = 1000;
+const frameRate = 60;
+const rate = second / frameRate;
+
 export function Game({ view }: { readonly view: SceneView }): null {
   React.useEffect(() => {
     startMovement(view);
@@ -19,31 +23,43 @@ export function Game({ view }: { readonly view: SceneView }): null {
 
   return null;
 }
+
 export function startMovement(view: SceneView) {
   const graphicsLayer = new GraphicsLayer();
 
-  console.log((angles = 1, duration = 1000) => {
-    const newCamera = new Camera({
-      position: cameraMesh.rotate(0, 0, -angles, { origin: centerPoint }).extent
-        .center,
-      heading: view.camera.heading + angles,
-      tilt: view.camera.tilt,
-    });
-    view.goTo(
-      {
-        target: newCamera,
-      },
-      { duration: duration, maxDuration: duration }
-    );
-  });
+  let boxes: Graphic[] = [];
+  function displayBox() {
+    const box = display(graphicsLayer, view);
+    boxes.push(box);
+  }
 
-  let boxes = [];
-  expose({ display: display.bind(undefined, graphicsLayer) });
+  function rotateAll(angle: number) {
+    boxes.forEach((box) => rotateGraphic(box, angle));
+    rotateCamera(view, angle);
+  }
+
+  let interval: ReturnType<typeof setInterval> | undefined = undefined;
+  const start = () => (interval = setInterval(() => rotateAll(-0.01), rate));
+  const stop = () => clearInterval(interval);
+  expose({ displayBox, rotateAll, start, stop });
 }
 
-function rotateGraphic(graphic: Graphic): void {
+function rotateCamera(view: SceneView, angle: number): void {
+  const newPosition = cameraMesh.rotate(0, 0, angle, { origin: centerPoint })
+    .extent.center;
+
+  const newCamera = new Camera({
+    position: newPosition,
+    heading: view.camera.heading - angle,
+    tilt: view.camera.tilt,
+  });
+
+  view.goTo({ target: newCamera }, { animate: false });
+}
+
+function rotateGraphic(graphic: Graphic, angle: number): void {
   const mesh = graphic.geometry as Mesh;
-  graphic.geometry = mesh.rotate(0, 0, -2, { origin: centerPoint }).clone();
+  graphic.geometry = mesh.rotate(0, 0, angle, { origin: centerPoint }).clone();
 }
 
 const size = 100;
@@ -61,7 +77,6 @@ function display(graphicsLayer: GraphicsLayer, view: SceneView) {
   clonePosition.y += offset[1];
   clonePosition.z += offset[2];
   const box = createBox(clonePosition);
-  console.log(rotateGraphic.bind(undefined, box));
   graphicsLayer.add(box);
   // FIXME: if this is called before first 5 seconds, it doesn't work. Why?
   view.map.add(graphicsLayer);
