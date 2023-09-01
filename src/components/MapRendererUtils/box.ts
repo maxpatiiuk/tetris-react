@@ -9,6 +9,7 @@ import SceneView from '@arcgis/core/views/SceneView';
 import MeshSymbol3d from '@arcgis/core/symbols/MeshSymbol3d';
 import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
 import SketchEdges3D from '@arcgis/core/symbols/edges/SketchEdges3D';
+import SolidEdges3D from '@arcgis/core/symbols/edges/SolidEdges3D';
 import Color from '@arcgis/core/Color';
 
 export function rotateGraphic(graphic: Graphic, angle: number): void {
@@ -42,7 +43,8 @@ const mix = (ratio: number, left: number, right: number): number =>
 const distanceFromCenter = 0.6;
 const mixPoints = mix.bind(undefined, distanceFromCenter);
 
-function createBox(position: Point): Graphic {
+// FIXME: re-enabled sketch edges for stationary map
+function createBox(position: Point, sketchEdges: boolean = false): Graphic {
   const hue = Math.random() * 360;
   const cubePolygon = Mesh.createBox(position, {
     size: {
@@ -60,11 +62,15 @@ function createBox(position: Point): Graphic {
           material: {
             color: color(hue, 0.5),
           },
-          edges: new SketchEdges3D({
-            size: blockSize * 0.15,
-            color: color(hue, 1),
-            extensionLength: 2,
-          }),
+          edges: sketchEdges
+            ? new SketchEdges3D({
+                size: blockSize * 0.15,
+                color: color(hue, 1),
+              })
+            : new SolidEdges3D({
+                size: blockSize * 0.15,
+                color: color(hue, 1),
+              }),
         }),
       ],
     }),

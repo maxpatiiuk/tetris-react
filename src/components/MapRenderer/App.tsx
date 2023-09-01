@@ -3,11 +3,12 @@ import SceneView from '@arcgis/core/views/SceneView';
 import Basemap from '@arcgis/core/Basemap';
 import Map from '@arcgis/core/Map';
 import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
-import { expose } from '../../utils/utils';
-import { cameraMesh } from '../Rendering/camera';
+import { expose } from '../../lib/utils';
+import { cameraMesh } from '../MapRendererUtils/camera';
 
 import './App.css';
-import { startMovement } from '../Rendering';
+import './index.css';
+import { startMovement } from '../MapRendererUtils';
 
 export function App() {
   const mapDiv = useRef(null);
