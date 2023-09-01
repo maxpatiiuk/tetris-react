@@ -4,9 +4,10 @@ import Basemap from '@arcgis/core/Basemap';
 import Map from '@arcgis/core/Map';
 import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
 import { expose } from '../../utils/utils';
+import { cameraMesh } from '../Game/camera';
 
 import './App.css';
-import { Game } from '../Game';
+import { Game, startMovement } from '../Game';
 
 export function App() {
   const mapDiv = useRef(null);
@@ -28,7 +29,7 @@ export function App() {
       const view = new SceneView({
         container: mapDiv.current,
         map,
-        // TODO: customizable
+        // TODO: customizable: https://next.sites.afd.arcgis.com/javascript/latest/sample-code/sandbox/?sample=scene-weather
         environment: {
           weather: new CloudyWeather({
             cloudCover: 0.3,
@@ -41,18 +42,10 @@ export function App() {
           },
         },
         // TODO: make this go around in circle
-
         camera: {
-          position: {
-            spatialReference: {
-              wkid: 102100,
-            },
-            x: -8238079.531665886,
-            y: 4967241.460219243,
-            z: 391.0542051009834,
-          },
-          heading: 308.6684617741516,
-          tilt: 80.17317239793229,
+          position: cameraMesh.extent.center,
+          heading: 0,
+          tilt: 90,
         },
         qualityProfile: 'high',
       });
@@ -61,6 +54,8 @@ export function App() {
         setView(view);
         // Disable labels
         view.map.allLayers.at(2).visible = false;
+
+        startMovement(view);
       });
       expose({ map, view });
     }
@@ -68,7 +63,7 @@ export function App() {
 
   return (
     <div className="mapDiv" ref={mapDiv}>
-      {view && <Game view={view} />}
+      {/* {view && <Game view={view} />} */}
     </div>
   );
 }
