@@ -7,7 +7,7 @@ import { expose } from '../../utils/utils';
 import { cameraMesh } from '../Game/camera';
 
 import './App.css';
-import { Game, startMovement } from '../Game';
+import { startMovement } from '../Game';
 
 export function App() {
   const mapDiv = useRef(null);
@@ -61,9 +61,5 @@ export function App() {
     }
   }, []);
 
-  return (
-    <div className="mapDiv" ref={mapDiv}>
-      {/* {view && <Game view={view} />} */}
-    </div>
-  );
+  return <div className="mapDiv" ref={mapDiv} />;
 }

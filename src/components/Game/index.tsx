@@ -6,7 +6,6 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import Camera from '@arcgis/core/Camera';
 import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
 import type Point from '@arcgis/core/geometry/Point';
-import React from 'react';
 import { expose } from '../../utils/utils';
 import Color from '@arcgis/core/Color';
 import { cameraMesh, centerPoint } from '../Game/camera';
@@ -15,14 +14,6 @@ import Mesh from '@arcgis/core/geometry/Mesh';
 const second = 1000;
 const frameRate = 60;
 const rate = second / frameRate;
-
-export function Game({ view }: { readonly view: SceneView }): null {
-  React.useEffect(() => {
-    startMovement(view);
-  }, [view]);
-
-  return null;
-}
 
 export function startMovement(view: SceneView) {
   const graphicsLayer = new GraphicsLayer();
@@ -62,26 +53,24 @@ function rotateGraphic(graphic: Graphic, angle: number): void {
   graphic.geometry = mesh.rotate(0, 0, angle, { origin: centerPoint }).clone();
 }
 
-const size = 100;
-const saturation = 250;
-const luminosity = 250;
-const color = (hue: number, opacity = 1) =>
-  Color.fromRgb(
-    `hsla(${Math.floor(hue)}, ${saturation}, ${luminosity}, ${opacity})`
-  );
-
 function display(graphicsLayer: GraphicsLayer, view: SceneView) {
-  const clonePosition = view.camera.position.clone();
-  const offset = [0, 5 * size, -size];
-  clonePosition.x += offset[0];
-  clonePosition.y += offset[1];
-  clonePosition.z += offset[2];
-  const box = createBox(clonePosition);
+  const newPosition = cameraMesh.extent.center.clone();
+  newPosition.x = mixPoints(centerPoint.x, newPosition.x);
+  newPosition.y = mixPoints(centerPoint.y, newPosition.y);
+  newPosition.z = mixPoints(centerPoint.z, newPosition.z);
+
+  const box = createBox(newPosition);
   graphicsLayer.add(box);
   // FIXME: if this is called before first 5 seconds, it doesn't work. Why?
   view.map.add(graphicsLayer);
   return box;
 }
+
+const mix = (ratio: number, left: number, right: number): number =>
+  left * (1 - ratio) + right * ratio;
+
+const distanceFromCenter = 0.6;
+const mixPoints = mix.bind(undefined, distanceFromCenter);
 
 function createBox(position: Point): Graphic {
   const hue = Math.random() * 360;
@@ -111,3 +100,11 @@ function createBox(position: Point): Graphic {
     }),
   });
 }
+
+const size = 100;
+const saturation = 250;
+const luminosity = 250;
+const color = (hue: number, opacity = 1) =>
+  Color.fromRgb(
+    `hsla(${Math.floor(hue)}, ${saturation}, ${luminosity}, ${opacity})`
+  );
