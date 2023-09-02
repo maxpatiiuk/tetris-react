@@ -8,7 +8,7 @@ import { blockSize } from './config';
  */
 export function computeOffsets(
   offsetBlocksX: number,
-  offsetBlocksY: number
+  offsetBlocksY: number,
 ): Point {
   const direction = normalize(computeDirection());
   const offsetMagnitudeX = perpendicularOne(direction);

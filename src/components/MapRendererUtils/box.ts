@@ -21,7 +21,7 @@ export function displayBox(
   graphicsLayer: GraphicsLayer,
   view: SceneView,
   offsetBlocksX: number = 0,
-  offsetBlocksY: number = 0
+  offsetBlocksY: number = 0,
 ) {
   const offsets = computeOffsets(offsetBlocksX, offsetBlocksY);
 
@@ -81,5 +81,5 @@ const saturation = 250;
 const luminosity = 250;
 const color = (hue: number, opacity = 1) =>
   Color.fromRgb(
-    `hsla(${Math.floor(hue)}, ${saturation}, ${luminosity}, ${opacity})`
+    `hsla(${Math.floor(hue)}, ${saturation}, ${luminosity}, ${opacity})`,
   );

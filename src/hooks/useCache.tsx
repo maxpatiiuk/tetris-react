@@ -1,8 +1,8 @@
-import React from "react";
-import { GetSet } from "../lib/types";
-import { getInitialState } from "../components/State/StateReducer";
+import React from 'react';
+import { GetSet } from '../lib/types';
+import { getInitialState } from '../components/State/StateReducer';
 
-const prefix = "tetris-react-";
+const prefix = 'tetris-react-';
 
 /**
  * Like React.useState, but initial value is read from localStorage
@@ -26,7 +26,7 @@ function useGenericCache<T>(name: string, defaultValue: T): GetSet<T> {
   );
 
   React.useEffect(() => {
-    globalThis.addEventListener("storage", ({ storageArea, key, newValue }) => {
+    globalThis.addEventListener('storage', ({ storageArea, key, newValue }) => {
       // "key" is null only when running `localStorage.clear()`
       if (
         storageArea !== globalThis.localStorage ||
@@ -52,6 +52,6 @@ function useGenericCache<T>(name: string, defaultValue: T): GetSet<T> {
   return [state, setCachedState];
 }
 
-export const useBestScore = () => useGenericCache("bestScore", 0);
+export const useBestScore = () => useGenericCache('bestScore', 0);
 export const useGameState = () =>
-  useGenericCache("gameState", getInitialState());
+  useGenericCache('gameState', getInitialState());

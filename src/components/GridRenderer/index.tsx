@@ -1,9 +1,9 @@
-import React from "react";
-import { useBestScore } from "../../hooks/useCache";
-import { shapes, Shape } from "../../config";
-import { localization } from "../../localization";
-import { RA } from "../../lib/types";
-import { RendererProps } from "../Renderers/types";
+import React from 'react';
+import { useBestScore } from '../../hooks/useCache';
+import { shapes, Shape } from '../../config';
+import { localization } from '../../localization';
+import { RA } from '../../lib/types';
+import { RendererProps } from '../Renderers/types';
 
 export function GridRenderer({
   board,
@@ -15,8 +15,8 @@ export function GridRenderer({
     <div
       className="grid grid-cols-4"
       style={{
-        width: "100vmin",
-        height: "100vmin",
+        width: '100vmin',
+        height: '100vmin',
       }}
     >
       <span />
@@ -26,14 +26,14 @@ export function GridRenderer({
         <br />
         <span className="text-4xl">
           {localization.score}
-          <span className={score > bestScore ? "text-red-500" : undefined}>
+          <span className={score > bestScore ? 'text-red-500' : undefined}>
             {score}
           </span>
         </span>
         <br />
-        {nextShape !== "_" && (
+        {nextShape !== '_' && (
           <span className="pt-2 text-4xl">
-            {localization.nextShape}{" "}
+            {localization.nextShape}{' '}
             <span
               style={{
                 color: shapes[nextShape].color,
