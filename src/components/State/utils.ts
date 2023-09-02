@@ -1,11 +1,11 @@
-import { boardX, boardY, scoreMultiplier, shapes, Shape } from "../../config";
-import { RA } from "../../lib/types";
+import { boardX, boardY, scoreMultiplier, shapes, Shape } from '../../config';
+import { RA } from '../../lib/types';
 import {
   GameState,
   ShapeLocation,
   ShapeLocationWritable,
-} from "./StateReducer";
-import { flattenShape } from "./transformShapes";
+} from './StateReducer';
+import { flattenShape } from './transformShapes';
 
 export function spawnNewShape(state: GameState): GameState | undefined {
   const shapeDefinition = shapes[state.nextShape].definition;
@@ -16,8 +16,8 @@ export function spawnNewShape(state: GameState): GameState | undefined {
     state.board.some((row, rowIndex) =>
       row.some(
         (cell, cellIndex) =>
-          shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === "1" &&
-          cell !== "_",
+          shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === '1' &&
+          cell !== '_',
       ),
     )
   )
@@ -38,11 +38,11 @@ export function spawnNewShape(state: GameState): GameState | undefined {
   return {
     ...state,
     currentShape: state.nextShape,
-    nextShape: "_",
+    nextShape: '_',
     currentShapeLocation,
     board: state.board.map((row, rowIndex) =>
       row.map((cell, cellIndex) =>
-        shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === "1"
+        shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === '1'
           ? updateCurrentShape(rowIndex, cellIndex)
           : cell,
       ),
@@ -66,7 +66,7 @@ export function updateBoard(
           (cell, cellIndex) =>
             newShapeLocation[rowIndex]?.[cellIndex] &&
             !state.currentShapeLocation[rowIndex]?.[cellIndex] &&
-            cell !== "_",
+            cell !== '_',
         ),
       )
       ? // Place shape
@@ -86,7 +86,7 @@ export function updateBoard(
               newShapeLocation[rowIndex]?.[cellIndex]
                 ? state.currentShape
                 : state.currentShapeLocation[rowIndex]?.[cellIndex]
-                ? "_"
+                ? '_'
                 : cell,
             ),
           ),
@@ -108,7 +108,7 @@ const removeCompletedRows = (
          */
         score: (state.score + scoreMultiplier * 2) ^ (rowsToRemove.length - 1),
         board: [
-          ...new Array(rowsToRemove.length).fill(new Array(boardX).fill("_")),
+          ...new Array(rowsToRemove.length).fill(new Array(boardX).fill('_')),
           ...state.board.filter((_, index) => !rowsToRemove.includes(index)),
         ],
       };
@@ -116,7 +116,7 @@ const removeCompletedRows = (
 const findCompletedRows = (board: RA<RA<Shape>>): number[] =>
   board
     .map((row, index) => ({
-      isCompleted: row.every((cell) => cell !== "_"),
+      isCompleted: row.every((cell) => cell !== '_'),
       index,
     }))
     .filter(({ isCompleted }) => isCompleted)

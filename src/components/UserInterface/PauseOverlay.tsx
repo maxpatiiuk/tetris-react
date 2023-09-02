@@ -1,6 +1,6 @@
-import React from "react";
-import { localization } from "../../localization";
-import { fancyButtonClassName } from "./Components";
+import React from 'react';
+import { localization } from '../../localization';
+import { fancyButtonClassName } from './Components';
 
 export function PauseOverlay({
   onSave: handleSave,
@@ -31,7 +31,6 @@ export function PauseOverlay({
           <button
             type="button"
             className={fancyButtonClassName}
-            disabled={localStorage.getItem("state") === null}
             onClick={handleLoad}
           >
             {localization.loadGame}

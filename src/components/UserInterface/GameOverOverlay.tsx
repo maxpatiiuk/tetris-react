@@ -1,7 +1,7 @@
-import React from "react";
-import { useBestScore } from "../../hooks/useCache";
-import { localization } from "../../localization";
-import { fancyButtonClassName } from "./Components";
+import React from 'react';
+import { useBestScore } from '../../hooks/useCache';
+import { localization } from '../../localization';
+import { fancyButtonClassName } from './Components';
 
 export function GameOverOverlay({
   score,

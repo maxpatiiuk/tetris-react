@@ -1,6 +1,6 @@
-import { Direction } from "./types";
-import { ShapeLocation } from "./StateReducer";
-import { RA } from "../../lib/types";
+import { Direction } from './types';
+import { ShapeLocation } from './StateReducer';
+import { RA } from '../../lib/types';
 
 export const flattenShape = (shape: ShapeLocation): RA<RA<number>> =>
   Object.entries(shape).flatMap(([rowIndex, row]) =>
@@ -48,8 +48,8 @@ const editShape = (
   [shape]
     .map((shape) => ({
       shape,
-      shapeXOffset: getShapeOffset(shape, "x"),
-      shapeYOffset: getShapeOffset(shape, "y"),
+      shapeXOffset: getShapeOffset(shape, 'x'),
+      shapeYOffset: getShapeOffset(shape, 'y'),
     }))
     .map(({ shape, shapeXOffset, shapeYOffset }) =>
       padShape(
@@ -59,9 +59,9 @@ const editShape = (
       ),
     )[0];
 
-const getShapeOffset = (shape: ShapeLocation, direction: "x" | "y") =>
+const getShapeOffset = (shape: ShapeLocation, direction: 'x' | 'y') =>
   getMinArrayValue(
-    (direction === "x"
+    (direction === 'x'
       ? Object.values(shape).flatMap((row) => Object.keys(row))
       : Object.keys(shape)
     ).map((value) => Number.parseInt(value)),
@@ -88,7 +88,7 @@ const stripShape = (shape: ShapeLocation, xOffset: number, yOffset: number) =>
   );
 
 const autoStripShape = (shape: ShapeLocation) =>
-  stripShape(shape, getShapeOffset(shape, "x"), getShapeOffset(shape, "y"));
+  stripShape(shape, getShapeOffset(shape, 'x'), getShapeOffset(shape, 'y'));
 
 const matrixToShape = (
   matrix: readonly (readonly (0 | 1)[])[],
@@ -129,7 +129,7 @@ const shapeToMatrix = (shape: ShapeLocation): (0 | 1)[][] =>
   [shape]
     .map((shape) => ({
       shape,
-      size: Math.max(getShapeSize(shape, "x"), getShapeSize(shape, "y")),
+      size: Math.max(getShapeSize(shape, 'x'), getShapeSize(shape, 'y')),
     }))
     .map(({ shape, size }) =>
       Array.from(new Array(size)).reduce(
@@ -147,9 +147,9 @@ const shapeToMatrix = (shape: ShapeLocation): (0 | 1)[][] =>
       ),
     )[0];
 
-const getShapeSize = (shape: ShapeLocation, direction: "x" | "y"): number =>
+const getShapeSize = (shape: ShapeLocation, direction: 'x' | 'y'): number =>
   getMaxArrayValue(
-    (direction === "y"
+    (direction === 'y'
       ? Object.keys(shape)
       : Object.values(shape).flatMap((row) => Object.keys(row))
     ).map((value) => Number.parseInt(value) + 1),

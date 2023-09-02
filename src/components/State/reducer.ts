@@ -2,11 +2,11 @@
  * Action's reducer
  */
 
-import { Direction } from "./types";
-import { moveShape } from "./transformShapes";
-import { spawnNewShape, updateBoard } from "./utils";
-import { shapes } from "../../config";
-import { GameState, getInitialState } from "./StateReducer";
+import { Direction } from './types';
+import { moveShape } from './transformShapes';
+import { spawnNewShape, updateBoard } from './utils';
+import { shapes } from '../../config';
+import { GameState, getInitialState } from './StateReducer';
 
 export const reducers = {
   move: (state: GameState, direction: Direction): GameState =>
@@ -36,7 +36,7 @@ export const reducers = {
       .map(([shapeName]) => shapeName);
 
     const nextShape =
-      state.nextShape === "_"
+      state.nextShape === '_'
         ? shapeNames[seed % shapeNames.length]
         : state.nextShape;
 

@@ -2,7 +2,7 @@
  * Configurations for the game
  */
 
-import { IR } from "./lib/types";
+import { IR } from './lib/types';
 
 /*
  * Board size horizontal
@@ -26,77 +26,77 @@ export const shapes: IR<{
   // What color to use for the shape
   color: string;
   // How does this shape look
-  definition: readonly (readonly ("0" | "1")[])[];
+  definition: readonly (readonly ('0' | '1')[])[];
   // Whether this shape can be randomly selected
   spawn: boolean;
 }> = {
   /* eslint-disable id-length */
   I: {
     // Cyan
-    color: "#0ff",
-    definition: [["1"], ["1"], ["1"], ["1"]],
+    color: '#0ff',
+    definition: [['1'], ['1'], ['1'], ['1']],
     spawn: true,
   },
   O: {
     // Light blue
-    color: "#0af",
+    color: '#0af',
     definition: [
-      ["1", "1"],
-      ["1", "1"],
+      ['1', '1'],
+      ['1', '1'],
     ],
     spawn: true,
   },
   T: {
     // Purple
-    color: "#f0f",
+    color: '#f0f',
     definition: [
-      ["1", "0"],
-      ["1", "1"],
-      ["1", "0"],
+      ['1', '0'],
+      ['1', '1'],
+      ['1', '0'],
     ],
     spawn: true,
   },
   S: {
     // Green
-    color: "#0f0",
+    color: '#0f0',
     definition: [
-      ["0", "1", "1"],
-      ["1", "1", "0"],
+      ['0', '1', '1'],
+      ['1', '1', '0'],
     ],
     spawn: true,
   },
   J: {
     // Blue
-    color: "#00f",
+    color: '#00f',
     definition: [
-      ["1", "0", "0"],
-      ["1", "1", "1"],
+      ['1', '0', '0'],
+      ['1', '1', '1'],
     ],
     spawn: true,
   },
   Z: {
     // Red
-    color: "#f00",
+    color: '#f00',
     definition: [
-      ["1", "1", "0"],
-      ["0", "1", "1"],
+      ['1', '1', '0'],
+      ['0', '1', '1'],
     ],
     spawn: true,
   },
   L: {
     // Orange
-    color: "#ffa500",
+    color: '#ffa500',
     definition: [
-      ["1", "0"],
-      ["1", "0"],
-      ["1", "1"],
+      ['1', '0'],
+      ['1', '0'],
+      ['1', '1'],
     ],
     spawn: true,
   },
   // Empty cell
   _: {
     // Black
-    color: "#000",
+    color: '#000',
     definition: [],
     spawn: false,
   },

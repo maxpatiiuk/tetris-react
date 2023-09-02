@@ -2,17 +2,17 @@
  * Main Tetris Game's component
  */
 
-import React from "react";
-import { initialSpeed, scoreMultiplier } from "../../config";
-import { Direction } from "../State/types";
-import { IR } from "../../lib/types";
-import { getInitialState } from "../State/StateReducer";
-import { Renderer } from "../Renderers/types";
-import { RendererPick } from "../Renderers";
-import { reducers } from "../State/reducer";
-import { useGameState } from "../../hooks/useCache";
-import { GameOverOverlay } from "./GameOver";
-import { PauseOverlay } from "./PauseOverlay";
+import React from 'react';
+import { initialSpeed, scoreMultiplier } from '../../config';
+import { Direction } from '../State/types';
+import { IR } from '../../lib/types';
+import { getInitialState } from '../State/StateReducer';
+import { Renderer } from '../Renderers/types';
+import { RendererPick } from '../Renderers';
+import { reducers } from '../State/reducer';
+import { useGameState } from '../../hooks/useCache';
+import { GameOverOverlay } from './GameOverOverlay';
+import { PauseOverlay } from './PauseOverlay';
 
 export function Tetris(): JSX.Element {
   const [renderer, setRenderer] = React.useState<Renderer | undefined>();
@@ -30,11 +30,11 @@ function Game({ renderer }: { renderer: Renderer }): JSX.Element {
   return (
     <>
       <DisplayRenderer
-        isGameOver={typeof gameOverScore === "number"}
+        isGameOver={typeof gameOverScore === 'number'}
         renderer={renderer}
         onGameOver={setGameOverScore}
       />
-      {typeof gameOverScore === "number" && (
+      {typeof gameOverScore === 'number' && (
         <GameOverOverlay
           score={gameOverScore}
           onRestart={(): void => setGameOverScore(undefined)}
@@ -67,7 +67,7 @@ function DisplayRenderer({
         // Need to give a seed here, since the reducer is pure
         Math.floor(Math.random() * 100),
       );
-      if (typeof newState === "object") setState(newState);
+      if (typeof newState === 'object') setState(newState);
       else handleGameOver(stateRef.current.score);
     }
     gameLoop();
@@ -81,7 +81,7 @@ function DisplayRenderer({
   }, [state.score]);
 
   function captureKeyDown({ key }: KeyboardEvent): void {
-    if (key === "Escape" || key === "p")
+    if (key === 'Escape' || key === 'p')
       setState(reducers.togglePause(stateRef.current));
     else if (key in keyMapping)
       setState(reducers.move(stateRef.current, keyMapping[key]));
@@ -90,8 +90,8 @@ function DisplayRenderer({
   React.useEffect(() => {
     if (isGameOver) return undefined;
     setState(getInitialState);
-    document.addEventListener("keydown", captureKeyDown);
-    return (): void => document.removeEventListener("keydown", captureKeyDown);
+    document.addEventListener('keydown', captureKeyDown);
+    return (): void => document.removeEventListener('keydown', captureKeyDown);
   }, [isGameOver]);
 
   return (
