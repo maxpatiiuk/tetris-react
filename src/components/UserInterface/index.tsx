@@ -6,7 +6,6 @@ import React from 'react';
 import { initialSpeed, scoreMultiplier } from '../../config';
 import { Direction } from '../State/types';
 import { IR } from '../../lib/types';
-import { getInitialState } from '../State/StateReducer';
 import { Renderer } from '../Renderers/types';
 import { RendererPick } from '../Renderers';
 import { reducers } from '../State/reducer';
@@ -43,7 +42,6 @@ function Game({ renderer }: { renderer: Renderer }): JSX.Element {
     </>
   );
 }
-``;
 
 function DisplayRenderer({
   renderer: Renderer,
@@ -54,7 +52,7 @@ function DisplayRenderer({
   onGameOver: (score: number) => void;
   isGameOver: boolean;
 }): JSX.Element {
-  const [state, setState] = React.useState(getInitialState);
+  const [state, setState] = React.useState(reducers.initial);
   const stateRef = React.useRef(state);
   stateRef.current = state;
 
@@ -80,16 +78,16 @@ function DisplayRenderer({
     return (): void => clearInterval(interval);
   }, [state.score]);
 
-  function captureKeyDown({ key }: KeyboardEvent): void {
-    if (key === 'Escape' || key === 'p')
-      setState(reducers.togglePause(stateRef.current));
-    else if (key in keyMapping)
-      setState(reducers.move(stateRef.current, keyMapping[key]));
-  }
-
   React.useEffect(() => {
     if (isGameOver) return undefined;
-    setState(getInitialState);
+    setState(reducers.initial);
+
+    function captureKeyDown({ key }: KeyboardEvent): void {
+      if (key === 'Escape' || key === 'p')
+        setState(reducers.togglePause(stateRef.current));
+      else if (key in keyMapping)
+        setState(reducers.move(stateRef.current, keyMapping[key]));
+    }
     document.addEventListener('keydown', captureKeyDown);
     return (): void => document.removeEventListener('keydown', captureKeyDown);
   }, [isGameOver]);

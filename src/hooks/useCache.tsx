@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetSet } from '../lib/types';
-import { getInitialState } from '../components/State/StateReducer';
+import { reducers } from '../components/State/reducer';
 
 const prefix = 'tetris-react-';
 
@@ -54,4 +54,4 @@ function useGenericCache<T>(name: string, defaultValue: T): GetSet<T> {
 
 export const useBestScore = () => useGenericCache('bestScore', 0);
 export const useGameState = () =>
-  useGenericCache('gameState', getInitialState());
+  useGenericCache('gameState', reducers.initial());
