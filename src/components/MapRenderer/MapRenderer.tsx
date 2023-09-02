@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import SceneView from '@arcgis/core/views/SceneView';
 import Basemap from '@arcgis/core/Basemap';
 import Map from '@arcgis/core/Map';
@@ -6,19 +6,17 @@ import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
 import { expose } from '../../lib/utils';
 import { cameraMesh } from '../MapRendererUtils/camera';
 
-import './App.css';
-import './index.css';
+import './styles.css';
 import { startMovement } from '../MapRendererUtils';
+import { RendererProps } from '../Renderers/types';
 
-export function App() {
-  const mapDiv = useRef(null);
-  const [view, setView] = React.useState<SceneView | undefined>(undefined);
+const mapRenderer = (animated: boolean) =>
+  function MapRenderer({ ...state }: RendererProps) {
+    const [mapContainer, setMap] = React.useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (mapDiv.current) {
-      /**
-       * Initialize application
-       */
+    React.useEffect(() => {
+      if (mapContainer === null) return;
+
       const map = new Map({
         basemap: new Basemap({
           portalItem: {
@@ -28,7 +26,7 @@ export function App() {
       });
 
       const view = new SceneView({
-        container: mapDiv.current,
+        container: mapContainer,
         map,
         // TODO: customizable: https://next.sites.afd.arcgis.com/javascript/latest/sample-code/sandbox/?sample=scene-weather
         environment: {
@@ -52,15 +50,16 @@ export function App() {
       });
 
       view.when(() => {
-        setView(view);
         // Disable labels
         view.map.allLayers.at(2).visible = false;
 
-        startMovement(view);
+        startMovement(view, animated);
       });
       expose({ map, view });
-    }
-  }, []);
+    }, [mapContainer]);
 
-  return <div className="mapDiv" ref={mapDiv} />;
-}
+    return <div className="w-full h-full" ref={setMap} />;
+  };
+
+export const PanoramaRenderer = mapRenderer(true);
+export const SceneryRenderer = mapRenderer(false);

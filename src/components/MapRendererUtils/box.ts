@@ -20,6 +20,7 @@ export function rotateGraphic(graphic: Graphic, angle: number): void {
 export function displayBox(
   graphicsLayer: GraphicsLayer,
   view: SceneView,
+  sketchEdges: boolean,
   offsetBlocksX: number = 0,
   offsetBlocksY: number = 0,
 ) {
@@ -30,7 +31,7 @@ export function displayBox(
   newPosition.y = mixPoints(centerPoint.y, newPosition.y) + offsets.y;
   newPosition.z = mixPoints(centerPoint.z, newPosition.z) + offsets.z;
 
-  const box = createBox(newPosition);
+  const box = createBox(newPosition, sketchEdges);
   graphicsLayer.add(box);
   // FIXME: if this is called before first 5 seconds, it doesn't work. Why?
   view.map.add(graphicsLayer);
@@ -43,7 +44,6 @@ const mix = (ratio: number, left: number, right: number): number =>
 const distanceFromCenter = 0.6;
 const mixPoints = mix.bind(undefined, distanceFromCenter);
 
-// FIXME: re-enabled sketch edges for stationary map
 function createBox(position: Point, sketchEdges: boolean = false): Graphic {
   const hue = Math.random() * 360;
   const cubePolygon = Mesh.createBox(position, {
