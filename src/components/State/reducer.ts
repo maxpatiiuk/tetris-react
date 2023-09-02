@@ -2,13 +2,29 @@
  * Action's reducer
  */
 
-import { Direction } from './types';
 import { moveShape } from './transformShapes';
 import { spawnNewShape, updateBoard } from './utils';
-import { shapes } from '../../config';
-import { GameState, getInitialState } from './StateReducer';
+import { Shape, boardX, boardY, shapes } from '../../config';
+import { Direction, GameState } from './types';
+import { RA } from '../../lib/types';
 
 export const reducers = {
+  initial: (): GameState => ({
+    board: Array.from<RA<Shape>>({ length: boardY }).fill(
+      Array.from<Shape>({ length: boardX }).fill('_'),
+    ),
+    currentShapeLocation: {},
+    currentShape: '_',
+    nextShape: '_',
+    score: 0,
+    paused: false,
+  }),
+
+  togglePause: (state: GameState): GameState => ({
+    ...state,
+    paused: !state.paused,
+  }),
+
   move: (state: GameState, direction: Direction): GameState =>
     Object.keys(state.currentShapeLocation).length === 0 ||
     (state.paused &&
@@ -23,11 +39,7 @@ export const reducers = {
             state.paused ? -1 : 1,
           ),
         ),
-  restart: getInitialState,
-  togglePause: (state: GameState): GameState => ({
-    ...state,
-    paused: !state.paused,
-  }),
+
   gravity(state: GameState, seed: number): GameState | undefined {
     if (state.paused) return state;
 

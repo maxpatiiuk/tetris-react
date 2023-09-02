@@ -1,5 +1,4 @@
-import { Direction } from './types';
-import { ShapeLocation } from './StateReducer';
+import { Direction, ShapeLocation } from './types';
 import { RA } from '../../lib/types';
 
 export const flattenShape = (shape: ShapeLocation): RA<RA<number>> =>

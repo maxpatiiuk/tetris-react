@@ -1,10 +1,6 @@
 import { boardX, boardY, scoreMultiplier, shapes, Shape } from '../../config';
 import { RA } from '../../lib/types';
-import {
-  GameState,
-  ShapeLocation,
-  ShapeLocationWritable,
-} from './StateReducer';
+import { GameState, ShapeLocation, ShapeLocationWritable } from './types';
 import { flattenShape } from './transformShapes';
 
 export function spawnNewShape(state: GameState): GameState | undefined {
