@@ -1,33 +1,27 @@
-import type {
-  MainState,
+import { boardX, boardY, scoreMultiplier, shapes, Shape } from "../../config";
+import { RA } from "../../lib/types";
+import {
+  GameState,
   ShapeLocation,
   ShapeLocationWritable,
-  States,
-} from '../../../components/projects/tetris/stateReducer';
-import { gameOverState } from '../../../components/projects/tetris/stateReducer';
-import {
-  BOARD_X,
-  BOARD_Y,
-  SCORE_MULTIPLIER,
-  SHAPES,
-} from '../../../const/projects/tetris/config';
-import { flattenShape } from './transformShapes';
+} from "./StateReducer";
+import { flattenShape } from "./transformShapes";
 
-export function spawnNewShape(state: MainState): States {
-  const shapeDefinition = SHAPES[state.nextShape].definition;
+export function spawnNewShape(state: GameState): GameState | undefined {
+  const shapeDefinition = shapes[state.nextShape].definition;
   const shapeWidth = shapeDefinition[0].length;
-  const shapeOffset = Math.round((BOARD_X - shapeWidth) / 2);
+  const shapeOffset = Math.round((boardX - shapeWidth) / 2);
 
   if (
     state.board.some((row, rowIndex) =>
       row.some(
         (cell, cellIndex) =>
-          shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === '1' &&
-          cell !== '_'
-      )
+          shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === "1" &&
+          cell !== "_",
+      ),
     )
   )
-    return gameOverState(state);
+    return undefined;
 
   const currentShapeLocation: ShapeLocationWritable = {};
 
@@ -44,64 +38,36 @@ export function spawnNewShape(state: MainState): States {
   return {
     ...state,
     currentShape: state.nextShape,
-    nextShape: '_',
+    nextShape: "_",
     currentShapeLocation,
     board: state.board.map((row, rowIndex) =>
       row.map((cell, cellIndex) =>
-        shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === '1'
+        shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === "1"
           ? updateCurrentShape(rowIndex, cellIndex)
-          : cell
-      )
+          : cell,
+      ),
     ),
   };
 }
 
-const findCompletedRows = (board: MainState['board']): number[] =>
-  board
-    .map((row, index) => ({
-      isCompleted: row.every((cell) => cell !== '_'),
-      index,
-    }))
-    .filter(({ isCompleted }) => isCompleted)
-    .map(({ index }) => index);
-
-const removeCompletedRows = (
-  state: MainState,
-  rowsToRemove: number[]
-): MainState =>
-  rowsToRemove.length === 0
-    ? state
-    : {
-        ...state,
-        /*
-         * Yes! Score growth exponentially!
-         * Though, speed increases as the score grows...
-         */
-        score: (state.score + SCORE_MULTIPLIER * 2) ^ (rowsToRemove.length - 1),
-        board: [
-          ...new Array(rowsToRemove.length).fill(new Array(BOARD_X).fill('_')),
-          ...state.board.filter((_, index) => !rowsToRemove.includes(index)),
-        ],
-      };
-
 export function updateBoard(
-  state: MainState,
-  newShapeLocation: ShapeLocation
-): MainState {
-  if (flattenShape(newShapeLocation).some(([, x]) => x < 0 || x >= BOARD_X))
+  state: GameState,
+  newShapeLocation: ShapeLocation,
+): GameState {
+  if (flattenShape(newShapeLocation).some(([, x]) => x < 0 || x >= boardX))
     return state;
 
   return (
     // Shape is at the bottom
-    flattenShape(newShapeLocation).some(([y]) => y >= BOARD_Y) ||
+    flattenShape(newShapeLocation).some(([y]) => y >= boardY) ||
       // Shape overlaps with another shape
       state.board.some((row, rowIndex) =>
         row.some(
           (cell, cellIndex) =>
             newShapeLocation[rowIndex]?.[cellIndex] &&
             !state.currentShapeLocation[rowIndex]?.[cellIndex] &&
-            cell !== '_'
-        )
+            cell !== "_",
+        ),
       )
       ? // Place shape
         removeCompletedRows(
@@ -109,7 +75,7 @@ export function updateBoard(
             ...state,
             currentShapeLocation: {},
           },
-          findCompletedRows(state.board)
+          findCompletedRows(state.board),
         )
       : // Move shape down
         {
@@ -120,10 +86,38 @@ export function updateBoard(
               newShapeLocation[rowIndex]?.[cellIndex]
                 ? state.currentShape
                 : state.currentShapeLocation[rowIndex]?.[cellIndex]
-                ? '_'
-                : cell
-            )
+                ? "_"
+                : cell,
+            ),
           ),
         }
   );
 }
+
+const removeCompletedRows = (
+  state: GameState,
+  rowsToRemove: number[],
+): GameState =>
+  rowsToRemove.length === 0
+    ? state
+    : {
+        ...state,
+        /*
+         * Yes! Score growth exponentially!
+         * Though, speed increases as the score grows...
+         */
+        score: (state.score + scoreMultiplier * 2) ^ (rowsToRemove.length - 1),
+        board: [
+          ...new Array(rowsToRemove.length).fill(new Array(boardX).fill("_")),
+          ...state.board.filter((_, index) => !rowsToRemove.includes(index)),
+        ],
+      };
+
+const findCompletedRows = (board: RA<RA<Shape>>): number[] =>
+  board
+    .map((row, index) => ({
+      isCompleted: row.every((cell) => cell !== "_"),
+      index,
+    }))
+    .filter(({ isCompleted }) => isCompleted)
+    .map(({ index }) => index);

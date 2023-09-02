@@ -6,3 +6,9 @@ export type IR<V> = Readonly<Record<string, V>>;
 export type RR<K extends string | number | symbol, V> = Readonly<Record<K, V>>;
 // Immutable Array
 export type RA<V> = readonly V[];
+
+export type GetSet<T> = readonly [T, (value: T) => void];
+export type GetOrSet<T> = readonly [
+  T,
+  (value: T | ((oldValue: T) => T)) => void
+];

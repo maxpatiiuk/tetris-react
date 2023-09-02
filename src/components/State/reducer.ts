@@ -1,90 +1,46 @@
 /*
  * Action's reducer
- *
  */
 
-import type { Action } from 'typesafe-reducer';
-import { generateReducer } from 'typesafe-reducer';
+import { Direction } from "./types";
+import { moveShape } from "./transformShapes";
+import { spawnNewShape, updateBoard } from "./utils";
+import { shapes } from "../../config";
+import { GameState, getInitialState } from "./StateReducer";
 
-import { Direction } from './types';
-import { moveShape } from './transformShapes';
-import { spawnNewShape, updateBoard } from './utils';
-import { MainState, States, getInitialState, mainState } from './stateReducer';
-import { SHAPES } from '../../config';
-
-type MoveAction = Action<
-  'MoveAction',
-  {
-    direction: Direction;
-  }
->;
-
-type RestartGameAction = Action<'RestartGameAction'>;
-
-type TogglePauseGameAction = Action<'TogglePauseGameAction'>;
-
-type GravityAction = Action<
-  'GravityAction',
-  {
-    seed: number;
-  }
->;
-
-type SaveGameAction = Action<'SaveGameAction'>;
-
-type LoadGameAction = Action<'LoadGameAction'>;
-
-type LoadHighScoreAction = Action<
-  'LoadHighScoreAction',
-  {
-    highScore: number;
-  }
->;
-
-export type Actions =
-  | MoveAction
-  | RestartGameAction
-  | TogglePauseGameAction
-  | GravityAction
-  | SaveGameAction
-  | LoadGameAction
-  | LoadHighScoreAction;
-
-export const reducer = generateReducer<States, Actions>({
-  MoveAction: ({ state, action: { direction } }) =>
-    Object.keys(mainState(state).currentShapeLocation).length === 0 ||
-    (mainState(state).paused &&
+export const reducers = {
+  move: (state: GameState, direction: Direction): GameState =>
+    Object.keys(state.currentShapeLocation).length === 0 ||
+    (state.paused &&
       // Don't cheat :)
       direction !== Direction.DOWN)
       ? state
       : updateBoard(
-          mainState(state),
+          state,
           moveShape(
-            mainState(state).currentShapeLocation,
+            state.currentShapeLocation,
             direction,
-            mainState(state).paused ? -1 : 1
-          )
+            state.paused ? -1 : 1,
+          ),
         ),
-  RestartGameAction: ({ state }) => getInitialState(state.bestScore),
-  TogglePauseGameAction: ({ state }) => ({
-    ...mainState(state),
-    paused: !mainState(state).paused,
+  restart: getInitialState,
+  togglePause: (state: GameState): GameState => ({
+    ...state,
+    paused: !state.paused,
   }),
-  GravityAction: ({ state: initialState, action: { seed } }) => {
-    const state = mainState(initialState);
-
+  gravity(state: GameState, seed: number): GameState | undefined {
     if (state.paused) return state;
 
-    const shapeNames = Object.entries(SHAPES)
+    const shapeNames = Object.entries(shapes)
       .filter(([, { spawn }]) => spawn)
       .map(([shapeName]) => shapeName);
 
     const nextShape =
-      state.nextShape === '_'
+      state.nextShape === "_"
         ? shapeNames[seed % shapeNames.length]
         : state.nextShape;
 
-    const newState: MainState = {
+    const newState: GameState = {
       ...state,
       nextShape,
     };
@@ -93,21 +49,7 @@ export const reducer = generateReducer<States, Actions>({
       ? spawnNewShape(newState)
       : updateBoard(
           newState,
-          moveShape(newState.currentShapeLocation, Direction.DOWN)
+          moveShape(newState.currentShapeLocation, Direction.DOWN),
         );
   },
-  SaveGameAction: ({ state }) => {
-    localStorage.setItem('state', JSON.stringify(state));
-    return state;
-  },
-  LoadGameAction({ state }) {
-    const savedState = localStorage.getItem('state');
-    return typeof savedState === 'string'
-      ? (JSON.parse(savedState) as MainState)
-      : state;
-  },
-  LoadHighScoreAction: ({ state, action: { highScore } }) => ({
-    ...state,
-    bestScore: highScore,
-  }),
-});
+} as const;
