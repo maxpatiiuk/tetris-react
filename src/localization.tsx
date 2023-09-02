@@ -17,4 +17,7 @@ export const localization = {
   nextShape: 'Next Shape: ',
   saveGame: 'Save game',
   loadGame: 'Load game',
+  panoramaRenderer: 'Panorama World',
+  sceneryRenderer: 'Scenery World',
+  gridRenderer: 'Grid World',
 };
