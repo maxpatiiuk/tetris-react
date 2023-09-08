@@ -14,7 +14,7 @@ export type GameState = {
   readonly currentShape: Shape;
   readonly currentShapeLocation: ShapeLocation;
   readonly nextShape: Shape;
-  readonly paused: boolean;
+  readonly isPaused: boolean;
 };
 
 export enum Direction {

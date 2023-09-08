@@ -7,13 +7,14 @@ import SceneView from '@arcgis/core/views/SceneView';
 import React from 'react';
 
 import { expose } from '../../lib/utils';
-import { startMovement } from '../MapRendererUtils';
+import { useMovement } from '../MapRendererUtils';
 import { cameraMesh } from '../MapRendererUtils/camera';
 import type { RendererProps } from '../Renderers/types';
 
 const mapRenderer = (animated: boolean) =>
-  function MapRenderer({ ...state }: RendererProps) {
+  function MapRenderer({ isPaused, ...state }: RendererProps) {
     const [mapContainer, setMap] = React.useState<HTMLDivElement | null>(null);
+    const [view, setView] = React.useState<SceneView | undefined>(undefined);
 
     React.useEffect(() => {
       if (mapContainer === null) return;
@@ -54,10 +55,12 @@ const mapRenderer = (animated: boolean) =>
         // Disable labels
         view.map.allLayers.at(2).visible = false;
 
-        startMovement(view, animated);
+        setView(view);
       });
       expose({ map, view });
     }, [mapContainer]);
+
+    useMovement(view, animated, isPaused);
 
     return <div className="w-full h-full" ref={setMap} />;
   };

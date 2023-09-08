@@ -19,17 +19,17 @@ export const reducers = {
     currentShape: '_',
     nextShape: '_',
     score: 0,
-    paused: false,
+    isPaused: false,
   }),
 
   togglePause: (state: GameState): GameState => ({
     ...state,
-    paused: !state.paused,
+    isPaused: !state.isPaused,
   }),
 
   move: (state: GameState, direction: Direction): GameState =>
     Object.keys(state.currentShapeLocation).length === 0 ||
-    (state.paused &&
+    (state.isPaused &&
       // Don't cheat :)
       direction !== Direction.DOWN)
       ? state
@@ -38,12 +38,12 @@ export const reducers = {
           moveShape(
             state.currentShapeLocation,
             direction,
-            state.paused ? -1 : 1,
+            state.isPaused ? -1 : 1,
           ),
         ),
 
   gravity(state: GameState, seed: number): GameState | undefined {
-    if (state.paused) return state;
+    if (state.isPaused) return state;
 
     const shapeNames = Object.entries(shapes)
       .filter(([, { spawn }]) => spawn)

@@ -106,22 +106,23 @@ function DisplayRenderer({
 
   return (
     <div className="flex items-center justify-center w-screen h-screen text-white bg-black">
-      {state.paused && (
+      <Renderer
+        board={state.board}
+        nextShape={state.nextShape}
+        score={state.score}
+        isPaused={state.isPaused || isGameOver}
+      />
+      {state.isPaused && (
         <PauseOverlay
           onLoad={() =>
             setState({
               ...savedState,
-              paused: false,
+              isPaused: false,
             })
           }
           onSave={(): void => setSavedState(state)}
         />
       )}
-      <Renderer
-        board={state.board}
-        nextShape={state.nextShape}
-        score={state.score}
-      />
     </div>
   );
 }
