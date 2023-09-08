@@ -17,12 +17,16 @@ import { Spotify } from '../Spotify';
 
 export function Tetris(): JSX.Element {
   const [renderer, setRenderer] = React.useState<Renderer | undefined>();
+  const [startedGame, setStartedGame] = React.useState(false);
 
   return (
     <>
       {renderer === undefined ? (
         <RendererPick
-          onSelect={(renderer): void => setRenderer(() => renderer)}
+          onSelect={(renderer): void => {
+            setStartedGame(true);
+            setRenderer(() => renderer);
+          }}
         />
       ) : (
         <Game
@@ -30,7 +34,7 @@ export function Tetris(): JSX.Element {
           onChangeMap={(): void => setRenderer(undefined)}
         />
       )}
-      <Spotify />
+      {startedGame && <Spotify />}
     </>
   );
 }
@@ -51,6 +55,7 @@ function Game({
         isGameOver={typeof gameOverScore === 'number'}
         renderer={renderer}
         onGameOver={setGameOverScore}
+        onChangeMap={handleChangeMap}
       />
       {typeof gameOverScore === 'number' && (
         <GameOverOverlay
@@ -65,12 +70,14 @@ function Game({
 
 function DisplayRenderer({
   renderer: Renderer,
-  onGameOver: handleGameOver,
   isGameOver,
+  onGameOver: handleGameOver,
+  onChangeMap: handleChangeMap,
 }: {
   readonly renderer: Renderer;
-  readonly onGameOver: (score: number) => void;
   readonly isGameOver: boolean;
+  readonly onGameOver: (score: number) => void;
+  readonly onChangeMap: () => void;
 }): JSX.Element {
   const [state, setState] = React.useState(reducers.initial);
   const stateRef = React.useRef(state);
@@ -136,6 +143,7 @@ function DisplayRenderer({
             })
           }
           onSave={(): void => setSavedState(state)}
+          onChangeMap={handleChangeMap}
         />
       )}
     </div>
