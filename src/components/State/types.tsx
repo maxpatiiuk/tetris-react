@@ -2,19 +2,19 @@
  * State Reducer
  */
 
-import { RA, RR } from '../../lib/types';
-import { Shape } from '../../config';
+import type { Shape } from '../../config';
+import type { RA, RR } from '../../lib/types';
 
 export type ShapeLocationWritable = Record<number, Record<number, boolean>>;
 export type ShapeLocation = RR<number, RR<number, boolean>>;
 
 export type GameState = {
-  board: RA<RA<Shape>>;
-  score: number;
-  currentShape: Shape;
-  currentShapeLocation: ShapeLocation;
-  nextShape: Shape;
-  paused: boolean;
+  readonly board: RA<RA<Shape>>;
+  readonly score: number;
+  readonly currentShape: Shape;
+  readonly currentShapeLocation: ShapeLocation;
+  readonly nextShape: Shape;
+  readonly paused: boolean;
 };
 
 export enum Direction {

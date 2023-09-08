@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useBestScore } from '../../hooks/useCache';
 import { localization } from '../../localization';
 import { fancyButtonClassName } from './Components';
@@ -32,15 +33,15 @@ export function GameOverOverlay({
         </h2>
         <div className="flex gap-4">
           <button
-            type="button"
             className={fancyButtonClassName}
+            type="button"
             onClick={handleRestart}
           >
             {localization.playAgain}
           </button>
           <button
-            type="button"
             className={fancyButtonClassName}
+            type="button"
             onClick={handleChangeMap}
           >
             {localization.changeMap}

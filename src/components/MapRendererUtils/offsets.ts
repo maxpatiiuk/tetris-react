@@ -1,4 +1,5 @@
 import Point from '@arcgis/core/geometry/Point';
+
 import { cameraMesh, centerPoint } from './camera';
 import { blockSize } from './config';
 

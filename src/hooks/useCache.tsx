@@ -1,6 +1,7 @@
 import React from 'react';
-import { GetSet } from '../lib/types';
+
 import { reducers } from '../components/State/reducer';
+import type { GetSet } from '../lib/types';
 
 const prefix = 'tetris-react-';
 

@@ -2,11 +2,13 @@
  * Action's reducer
  */
 
+import type { Shape } from '../../config';
+import { boardX, boardY, shapes } from '../../config';
+import type { RA } from '../../lib/types';
 import { moveShape } from './transformShapes';
+import type { GameState } from './types';
+import { Direction } from './types';
 import { spawnNewShape, updateBoard } from './utils';
-import { Shape, boardX, boardY, shapes } from '../../config';
-import { Direction, GameState } from './types';
-import { RA } from '../../lib/types';
 
 export const reducers = {
   initial: (): GameState => ({

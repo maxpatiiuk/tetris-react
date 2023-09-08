@@ -2,7 +2,7 @@
  * Configurations for the game
  */
 
-import { IR } from './lib/types';
+import type { IR } from './lib/types';
 
 /*
  * Board size horizontal
@@ -24,13 +24,12 @@ export const scoreMultiplier = 100;
 /* eslint-disable @typescript-eslint/naming-convention */
 export const shapes: IR<{
   // What color to use for the shape
-  color: string;
+  readonly color: string;
   // How does this shape look
-  definition: readonly (readonly ('0' | '1')[])[];
+  readonly definition: readonly (readonly ('0' | '1')[])[];
   // Whether this shape can be randomly selected
-  spawn: boolean;
+  readonly spawn: boolean;
 }> = {
-  /* eslint-disable id-length */
   I: {
     // Cyan
     color: '#0ff',
