@@ -12,20 +12,21 @@ export function computeOffsets(
   offsetBlocksY: number,
 ): Point {
   const direction = normalize(computeDirection());
-  const offsetMagnitudeX = perpendicularOne(direction);
-  const offsetMagnitudeZ = perpendicularTwo(direction, offsetMagnitudeX);
+  const offsetMagnitudeY = perpendicularOne(direction);
+  const offsetMagnitudeX = perpendicularTwo(direction, offsetMagnitudeY);
 
-  const size = blockSize * 5;
+  const xSize = blockSize * 13;
+  const ySize = blockSize * 10;
   return new Point({
     x:
-      offsetMagnitudeX.x * offsetBlocksX * size +
-      offsetMagnitudeZ.x * offsetBlocksY * size,
+      offsetMagnitudeX.x * offsetBlocksX * xSize +
+      offsetMagnitudeY.x * offsetBlocksY * ySize,
     y:
-      offsetMagnitudeX.y * offsetBlocksX * size +
-      offsetMagnitudeZ.y * offsetBlocksY * size,
+      offsetMagnitudeX.y * offsetBlocksX * xSize +
+      offsetMagnitudeY.y * offsetBlocksY * ySize,
     z:
-      offsetMagnitudeX.z * offsetBlocksX * size +
-      offsetMagnitudeZ.z * offsetBlocksY * size,
+      offsetMagnitudeX.z * offsetBlocksX * xSize +
+      offsetMagnitudeY.z * offsetBlocksY * ySize,
   });
 }
 

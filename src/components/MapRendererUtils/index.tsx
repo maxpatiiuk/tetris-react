@@ -2,14 +2,16 @@ import type Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import type SceneView from '@arcgis/core/views/SceneView';
 
-import { expose } from '../../lib/utils';
-import type { WritableArray } from '../../lib/types';
-import { displayBox, rotateGraphic } from './box';
+import { expose, filterArray } from '../../lib/utils';
+import type { RA } from '../../lib/types';
+import { GraphicWithType, displayBox, rotateGraphic, updateBox } from './box';
 import { rotateCamera } from './camera';
 import React from 'react';
+import { Shape, boardX, boardY } from '../../config';
 
 export function useMovement(
   view: SceneView | undefined,
+  board: RA<RA<Shape>>,
   isAnimated: boolean,
   isPaused: boolean,
 ): void {
@@ -19,10 +21,18 @@ export function useMovement(
   );
 
   React.useEffect(() => {
-    if (controls === undefined || isPaused) return;
+    if (controls === undefined || !isAnimated || isPaused) return;
     controls.start();
     return controls.stop;
-  }, [controls, isPaused]);
+  }, [controls, isAnimated, isPaused]);
+
+  React.useEffect(() => {
+    if (controls === undefined) return;
+
+    board.forEach((row, y) =>
+      row.forEach((shape, x) => controls.spawnBox(shape, x, y)),
+    );
+  }, [controls, board]);
 }
 
 function startMovement(
@@ -31,32 +41,52 @@ function startMovement(
 ): {
   readonly start: () => void;
   readonly stop: () => void;
+  readonly spawnBox: (type: Shape, x: number, y: number) => Graphic;
 } {
   const graphicsLayer = new GraphicsLayer();
 
   function rotateAll(angle: number) {
-    boxes.forEach((box) => rotateGraphic(box, angle));
+    filterArray(
+      Object.values(boxes)
+        .map((row) => Object.values(row ?? {}))
+        .flat(),
+    ).forEach((box) => rotateGraphic(box, angle));
     rotateCamera(view, angle);
   }
 
-  const boxes: WritableArray<Graphic> = [];
-  function spawnBox(offsetBlocksX: number = 0, offsetBlocksY: number = 0) {
-    const box = displayBox(
+  const boxes: Partial<
+    Record<number, Partial<Record<number, GraphicWithType>>>
+  > = {};
+
+  function spawnBox(
+    type: Shape,
+    offsetBlocksX: number = 0,
+    offsetBlocksY: number = 0,
+  ): GraphicWithType {
+    boxes[offsetBlocksY] ??= {};
+
+    boxes[offsetBlocksY]![offsetBlocksX] ??= displayBox(
       graphicsLayer,
       view,
-      isAnimated,
-      offsetBlocksX,
-      offsetBlocksY,
+      type,
+      !isAnimated,
+      // Array indexes to screen points
+      -(boardX / 2) + offsetBlocksX,
+      boardY / 2 - offsetBlocksY,
     );
-    boxes.push(box);
+
+    const box = boxes[offsetBlocksY]![offsetBlocksX]!;
+    updateBox(box, type, !isAnimated);
+
+    return box;
   }
 
   let interval: ReturnType<typeof setInterval> | undefined = undefined;
-  const start = () => (interval = setInterval(() => rotateAll(-0.01), rate));
+  const start = () => (interval = setInterval(() => rotateAll(-0.02), rate));
   const stop = () => clearInterval(interval);
   expose({ spawnBox, rotateAll, start, stop });
 
-  return { start, stop };
+  return { start, stop, spawnBox };
 }
 
 const second = 1000;
