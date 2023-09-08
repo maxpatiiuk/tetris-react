@@ -19,10 +19,20 @@ export function Tetris(): JSX.Element {
   return renderer === undefined ? (
     <RendererPick onSelect={(renderer): void => setRenderer(() => renderer)} />
   ) : (
-    <Game renderer={renderer}></Game>
+    <Game
+      renderer={renderer}
+      onChangeMap={(): void => setRenderer(undefined)}
+    ></Game>
   );
 }
-function Game({ renderer }: { renderer: Renderer }): JSX.Element {
+
+function Game({
+  renderer,
+  onChangeMap: handleChangeMap,
+}: {
+  readonly renderer: Renderer;
+  readonly onChangeMap: () => void;
+}): JSX.Element {
   const [gameOverScore, setGameOverScore] = React.useState<
     number | undefined
   >();
@@ -37,6 +47,7 @@ function Game({ renderer }: { renderer: Renderer }): JSX.Element {
         <GameOverOverlay
           score={gameOverScore}
           onRestart={(): void => setGameOverScore(undefined)}
+          onChangeMap={handleChangeMap}
         />
       )}
     </>
@@ -94,15 +105,17 @@ function DisplayRenderer({
 
   return (
     <div className="flex items-center justify-center w-screen h-screen text-white bg-black">
-      <PauseOverlay
-        onSave={(): void => setSavedState(state)}
-        onLoad={() =>
-          setState({
-            ...savedState,
-            paused: false,
-          })
-        }
-      />
+      {state.paused && (
+        <PauseOverlay
+          onSave={(): void => setSavedState(state)}
+          onLoad={() =>
+            setState({
+              ...savedState,
+              paused: false,
+            })
+          }
+        />
+      )}
       <Renderer
         board={state.board}
         score={state.score}

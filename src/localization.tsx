@@ -20,4 +20,5 @@ export const localization = {
   panoramaRenderer: 'Panorama World',
   sceneryRenderer: 'Scenery World',
   gridRenderer: 'Grid World',
+  changeMap: 'Change Map',
 };
