@@ -71,14 +71,15 @@ function DisplayRenderer({
   const [savedState, setSavedState] = useGameState();
 
   React.useEffect(() => {
+    if (isGameOver) return undefined;
     function gameLoop(): void {
-      const newState = reducers.gravity(
+      const { isGameOver = false, ...newState } = reducers.gravity(
         stateRef.current,
         // Need to give a seed here, since the reducer is pure
         Math.floor(Math.random() * 100),
       );
-      if (typeof newState === 'object') setState(newState);
-      else handleGameOver(stateRef.current.score);
+      if (isGameOver) handleGameOver(stateRef.current.score);
+      setState(newState);
     }
     gameLoop();
 
@@ -88,7 +89,7 @@ function DisplayRenderer({
       initialSpeed / Math.log(3 + state.score / scoreMultiplier),
     );
     return (): void => clearInterval(interval);
-  }, [state.score]);
+  }, [state.score, isGameOver]);
 
   React.useEffect(() => {
     if (isGameOver) return undefined;

@@ -42,7 +42,10 @@ export const reducers = {
           ),
         ),
 
-  gravity(state: GameState, seed: number): GameState | undefined {
+  gravity(
+    state: GameState,
+    seed: number,
+  ): GameState & { readonly isGameOver?: boolean } {
     if (state.isPaused) return state;
 
     const shapeNames = Object.entries(shapes)
