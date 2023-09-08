@@ -12,15 +12,15 @@ export function PauseOverlay({
 }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center w-screen h-screen text-4xl text-center bg-black/70">
-      <span>
+      <div className="flex flex-col gap-8">
         {localization.paused}
-        <br />
-        {localization.pressKeyToResume(
-          <span className="rounded-xl p-px text-black bg-white">
-            {localization.esc}
-          </span>,
-        )}
-        <br />
+        <span>
+          {localization.pressKeyToResume(
+            <span className="rounded-xl p-px text-black bg-white">
+              {localization.esc}
+            </span>,
+          )}
+        </span>
         <div className="flex gap-4">
           <button
             className={buttonClassName}
@@ -37,7 +37,7 @@ export function PauseOverlay({
             {localization.loadGame}
           </button>
         </div>
-      </span>
+      </div>
     </div>
   );
 }

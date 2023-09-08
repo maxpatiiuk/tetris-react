@@ -12,3 +12,5 @@ export type GetOrSet<T> = readonly [
   T,
   (value: T | ((oldValue: T) => T)) => void,
 ];
+
+export type WritableArray<T> = T[];
