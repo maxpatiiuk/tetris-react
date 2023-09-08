@@ -53,12 +53,12 @@ const mapRenderer = (isAnimated: boolean) =>
         qualityProfile: 'high',
       });
 
+      // Remove all widgets
+      view.ui.remove(view.ui.getComponents());
+
       view.when(() => {
         // Disable labels
         view.map.allLayers.at(2).visible = false;
-
-        // Remove all widgets
-        view.ui.remove(view.ui.getComponents());
 
         setView(view);
       });
