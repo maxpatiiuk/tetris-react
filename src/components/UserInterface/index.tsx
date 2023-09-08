@@ -95,14 +95,20 @@ function DisplayRenderer({
     if (isGameOver) return undefined;
     setState(reducers.initial);
 
-    function captureKeyDown({ key }: KeyboardEvent): void {
-      if (key === 'Escape' || key === 'p')
+    function captureKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape' || event.key === 'p')
         setState(reducers.togglePause(stateRef.current));
-      else if (key in keyMapping)
-        setState(reducers.move(stateRef.current, keyMapping[key]));
+      else if (event.key in keyMapping) {
+        setState(reducers.move(stateRef.current, keyMapping[event.key]));
+        event.preventDefault();
+        event.stopPropagation();
+      }
     }
-    document.addEventListener('keydown', captureKeyDown);
-    return (): void => document.removeEventListener('keydown', captureKeyDown);
+    document.addEventListener('keydown', captureKeyDown, { capture: true });
+    return (): void =>
+      document.removeEventListener('keydown', captureKeyDown, {
+        capture: true,
+      });
   }, [isGameOver]);
 
   return (
