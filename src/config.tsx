@@ -3,6 +3,7 @@
  */
 
 import type { IR } from './lib/types';
+import { HueComponents } from './lib/utils';
 
 /*
  * Board size horizontal
@@ -24,21 +25,21 @@ export const scoreMultiplier = 100;
 /* eslint-disable @typescript-eslint/naming-convention */
 export const shapes: IR<{
   // What color to use for the shape
-  readonly color: string;
-  // How does this shape look
+  readonly color: HueComponents;
+  // how does this shape look
   readonly definition: readonly (readonly ('0' | '1')[])[];
-  // Whether this shape can be randomly selected
+  // whether this shape can be randomly selected
   readonly spawn: boolean;
 }> = {
   I: {
     // Cyan
-    color: '#0ff',
+    color: [180, 100, 50],
     definition: [['1'], ['1'], ['1'], ['1']],
     spawn: true,
   },
   O: {
     // Light blue
-    color: '#0af',
+    color: [200, 100, 50],
     definition: [
       ['1', '1'],
       ['1', '1'],
@@ -47,7 +48,7 @@ export const shapes: IR<{
   },
   T: {
     // Purple
-    color: '#f0f',
+    color: [300, 100, 50],
     definition: [
       ['1', '0'],
       ['1', '1'],
@@ -57,7 +58,7 @@ export const shapes: IR<{
   },
   S: {
     // Green
-    color: '#0f0',
+    color: [120, 100, 50],
     definition: [
       ['0', '1', '1'],
       ['1', '1', '0'],
@@ -66,7 +67,7 @@ export const shapes: IR<{
   },
   J: {
     // Blue
-    color: '#00f',
+    color: [240, 100, 50],
     definition: [
       ['1', '0', '0'],
       ['1', '1', '1'],
@@ -75,7 +76,7 @@ export const shapes: IR<{
   },
   Z: {
     // Red
-    color: '#f00',
+    color: [0, 100, 50],
     definition: [
       ['1', '1', '0'],
       ['0', '1', '1'],
@@ -84,7 +85,7 @@ export const shapes: IR<{
   },
   L: {
     // Orange
-    color: '#ffa500',
+    color: [38.82, 100, 50],
     definition: [
       ['1', '0'],
       ['1', '0'],
@@ -95,7 +96,7 @@ export const shapes: IR<{
   // Empty cell
   _: {
     // Black
-    color: '#000',
+    color: [0, 0, 0],
     definition: [],
     spawn: false,
   },

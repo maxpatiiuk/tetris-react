@@ -6,13 +6,13 @@ import { useBestScore } from '../../hooks/useCache';
 import type { RA } from '../../lib/types';
 import { localization } from '../../localization';
 import type { RendererProps } from '../Renderers/types';
+import { hueComponentsToColor } from '../../lib/utils';
 
 export function GridRenderer({
   board,
   score,
   nextShape,
 }: RendererProps): JSX.Element {
-  const [bestScore] = useBestScore();
   return (
     <div
       className="grid grid-cols-4"
@@ -23,29 +23,7 @@ export function GridRenderer({
     >
       <span />
       <Board board={board} />
-      <div className="p-2 overflow-hidden">
-        {localization.instructions}
-        <br />
-        <span className="text-4xl">
-          {localization.score}
-          <span className={score > bestScore ? 'text-red-500' : undefined}>
-            {score}
-          </span>
-        </span>
-        <br />
-        {nextShape !== '_' && (
-          <span className="pt-2 text-4xl">
-            {localization.nextShape}{' '}
-            <span
-              style={{
-                color: shapes[nextShape].color,
-              }}
-            >
-              {nextShape}
-            </span>
-          </span>
-        )}
-      </div>
+      <GameAside score={score} nextShape={nextShape} />
     </div>
   );
 }
@@ -60,13 +38,45 @@ function Board({ board }: { readonly board: RA<RA<Shape>> }): JSX.Element {
               <div
                 key={index}
                 style={{
-                  backgroundColor: shapes[cell].color,
+                  backgroundColor: hueComponentsToColor(shapes[cell].color),
                 }}
               />
             ))}
           </React.Fragment>
         ))}
       </div>
+    </div>
+  );
+}
+
+function GameAside({
+  score,
+  nextShape,
+}: Pick<RendererProps, 'score' | 'nextShape'>): JSX.Element {
+  const [bestScore] = useBestScore();
+  return (
+    <div className="p-2 overflow-hidden">
+      {localization.instructions}
+      <br />
+      <span className="text-4xl">
+        {localization.score}
+        <span className={score > bestScore ? 'text-red-500' : undefined}>
+          {score}
+        </span>
+      </span>
+      <br />
+      {nextShape !== '_' && (
+        <span className="pt-2 text-4xl">
+          {localization.nextShape}{' '}
+          <span
+            style={{
+              color: hueComponentsToColor(shapes[nextShape].color),
+            }}
+          >
+            {nextShape}
+          </span>
+        </span>
+      )}
     </div>
   );
 }

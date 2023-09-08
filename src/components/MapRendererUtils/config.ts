@@ -1,1 +1,1 @@
-export const blockSize = 100;
+export const blockSize = 20;

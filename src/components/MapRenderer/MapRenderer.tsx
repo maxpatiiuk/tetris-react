@@ -7,12 +7,12 @@ import SceneView from '@arcgis/core/views/SceneView';
 import React from 'react';
 
 import { expose } from '../../lib/utils';
-import { useMovement } from '../MapRendererUtils';
-import { cameraMesh } from '../MapRendererUtils/camera';
+import { useMovement as useBoard } from '../MapRendererUtils';
+import { cameraMesh, stationaryCamera } from '../MapRendererUtils/camera';
 import type { RendererProps } from '../Renderers/types';
 
-const mapRenderer = (animated: boolean) =>
-  function MapRenderer({ isPaused, ...state }: RendererProps) {
+const mapRenderer = (isAnimated: boolean) =>
+  function MapRenderer({ isPaused, board, ...state }: RendererProps) {
     const [mapContainer, setMap] = React.useState<HTMLDivElement | null>(null);
     const [view, setView] = React.useState<SceneView | undefined>(undefined);
 
@@ -43,11 +43,13 @@ const mapRenderer = (animated: boolean) =>
           },
         },
         // TODO: make this go around in circle
-        camera: {
-          position: cameraMesh.extent.center,
-          heading: 0,
-          tilt: 90,
-        },
+        camera: isAnimated
+          ? {
+              position: cameraMesh.extent.center,
+              heading: 0,
+              tilt: 90,
+            }
+          : stationaryCamera,
         qualityProfile: 'high',
       });
 
@@ -60,7 +62,7 @@ const mapRenderer = (animated: boolean) =>
       expose({ map, view });
     }, [mapContainer]);
 
-    useMovement(view, animated, isPaused);
+    useBoard(view, board, isAnimated, isPaused);
 
     return <div className="w-full h-full" ref={setMap} />;
   };

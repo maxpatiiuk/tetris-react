@@ -18,6 +18,19 @@ const cameraStart = centerPoint.clone();
 cameraStart.x -= 100;
 cameraStart.y -= 1800;
 
+export const stationaryCamera = new Camera({
+  position: {
+    spatialReference: {
+      wkid: 102100,
+    },
+    x: -8239642.780754315,
+    y: 4968177.0089062005,
+    z: 37.09296718426049,
+  },
+  heading: 24.257897820847298,
+  tilt: 95.19672570018218,
+});
+
 /**
  * Using mesh for camera position because:
  * - It has a nice method for rotating the position relative to some other point
