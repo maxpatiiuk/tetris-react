@@ -4,21 +4,20 @@ import type { RA } from '../../lib/types';
 import { flattenShape } from './transformShapes';
 import type { GameState, ShapeLocation, ShapeLocationWritable } from './types';
 
-export function spawnNewShape(state: GameState): GameState | undefined {
+export function spawnNewShape(
+  state: GameState,
+): GameState & { readonly isGameOver: boolean } {
   const shapeDefinition = shapes[state.nextShape].definition;
   const shapeWidth = shapeDefinition[0].length;
   const shapeOffset = Math.round((boardX - shapeWidth) / 2);
 
-  if (
-    state.board.some((row, rowIndex) =>
-      row.some(
-        (cell, cellIndex) =>
-          shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === '1' &&
-          cell !== '_',
-      ),
-    )
-  )
-    return undefined;
+  const isGameOver = state.board.some((row, rowIndex) =>
+    row.some(
+      (cell, cellIndex) =>
+        shapeDefinition[rowIndex]?.[cellIndex - shapeOffset] === '1' &&
+        cell !== '_',
+    ),
+  );
 
   const currentShapeLocation: ShapeLocationWritable = {};
 
@@ -34,6 +33,7 @@ export function spawnNewShape(state: GameState): GameState | undefined {
 
   return {
     ...state,
+    isGameOver,
     currentShape: state.nextShape,
     nextShape: '_',
     currentShapeLocation,
@@ -105,7 +105,7 @@ const removeCompletedRows = (
          */
         score: (state.score + scoreMultiplier * 2) ^ (rowsToRemove.length - 1),
         board: [
-          ...Array.from({ length: rowsToRemove.length }).fill(
+          ...Array.from<RA<Shape>>({ length: rowsToRemove.length }).fill(
             new Array(boardX).fill('_'),
           ),
           ...state.board.filter((_, index) => !rowsToRemove.includes(index)),
