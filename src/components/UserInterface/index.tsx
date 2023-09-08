@@ -13,18 +13,25 @@ import { reducers } from '../State/reducer';
 import { Direction } from '../State/types';
 import { GameOverOverlay } from './GameOverOverlay';
 import { PauseOverlay } from './PauseOverlay';
-import { Spotify } from './Spotify';
+import { Spotify } from '../Spotify';
 
 export function Tetris(): JSX.Element {
   const [renderer, setRenderer] = React.useState<Renderer | undefined>();
 
-  return renderer === undefined ? (
-    <RendererPick onSelect={(renderer): void => setRenderer(() => renderer)} />
-  ) : (
-    <Game
-      renderer={renderer}
-      onChangeMap={(): void => setRenderer(undefined)}
-    />
+  return (
+    <>
+      {renderer === undefined ? (
+        <RendererPick
+          onSelect={(renderer): void => setRenderer(() => renderer)}
+        />
+      ) : (
+        <Game
+          renderer={renderer}
+          onChangeMap={(): void => setRenderer(undefined)}
+        />
+      )}
+      <Spotify />
+    </>
   );
 }
 
@@ -131,7 +138,6 @@ function DisplayRenderer({
           onSave={(): void => setSavedState(state)}
         />
       )}
-      <Spotify />
     </div>
   );
 }

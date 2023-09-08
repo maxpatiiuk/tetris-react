@@ -21,4 +21,5 @@ export const localization = {
   sceneryRenderer: 'Scenery World',
   gridRenderer: 'Grid World',
   changeMap: 'Change Map',
+  nextSong: 'Next Song',
 };
