@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { localization } from '../../localization';
-import { fancyButtonClassName } from './Components';
+import { buttonClassName } from './Components';
 
 export function PauseOverlay({
   onSave: handleSave,
@@ -23,14 +23,14 @@ export function PauseOverlay({
         <br />
         <div className="flex gap-4">
           <button
-            className={fancyButtonClassName}
+            className={buttonClassName}
             type="button"
             onClick={handleSave}
           >
             {localization.saveGame}
           </button>
           <button
-            className={fancyButtonClassName}
+            className={buttonClassName}
             type="button"
             onClick={handleLoad}
           >
