@@ -10,6 +10,7 @@ import { expose } from '../../lib/utils';
 import { useMovement as useBoard } from '../MapRendererUtils';
 import { cameraMesh, stationaryCamera } from '../MapRendererUtils/camera';
 import type { RendererProps } from '../Renderers/types';
+import { useEffects } from './useEffects';
 
 const mapRenderer = (isAnimated: boolean) =>
   function MapRenderer({ isPaused, board, nextShape, score }: RendererProps) {
@@ -30,7 +31,6 @@ const mapRenderer = (isAnimated: boolean) =>
       const view = new SceneView({
         container: mapContainer,
         map,
-        // TODO: customizable: https://next.sites.afd.arcgis.com/javascript/latest/sample-code/sandbox/?sample=scene-weather
         environment: {
           weather: new CloudyWeather({
             cloudCover: 0.3,
@@ -42,7 +42,6 @@ const mapRenderer = (isAnimated: boolean) =>
             date: new Date('Sun Mar 15 2019 16:00:00 GMT+0100 (CET)'),
           },
         },
-        // TODO: make this go around in circle
         camera: isAnimated
           ? {
               position: cameraMesh.extent.center,
@@ -66,6 +65,7 @@ const mapRenderer = (isAnimated: boolean) =>
     }, [mapContainer]);
 
     useBoard(view, board, isAnimated, isPaused);
+    useEffects(view, score);
 
     return <div className="w-full h-full" ref={setMap} />;
   };

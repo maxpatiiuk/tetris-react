@@ -6,9 +6,11 @@ import { buttonClassName } from './Components';
 export function PauseOverlay({
   onSave: handleSave,
   onLoad: handleLoad,
+  onChangeMap: handleChangeMap,
 }: {
   readonly onSave: () => void;
   readonly onLoad: () => void;
+  readonly onChangeMap: () => void;
 }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center w-screen h-screen text-4xl text-center bg-black/70">
@@ -35,6 +37,13 @@ export function PauseOverlay({
             onClick={handleLoad}
           >
             {localization.loadGame}
+          </button>
+          <button
+            className={buttonClassName}
+            type="button"
+            onClick={handleChangeMap}
+          >
+            {localization.changeMap}
           </button>
         </div>
       </div>

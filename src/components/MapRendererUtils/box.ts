@@ -104,20 +104,33 @@ const saturation = 100;
 const luminosity = 40;
 function color(type: Shape, opacity = 1) {
   const hue = shapes[type].color[0];
-  return Color.fromRgb(
+  return buildColor(
+    hue,
+    saturation,
+    type === '_' ? 100 : luminosity,
+    type === '_' ? opacity * 0.6 : opacity,
+  );
+}
+
+export const buildColor = (
+  hue: number,
+  saturation: number,
+  luminosity: number,
+  opacity = 1,
+) =>
+  Color.fromRgb(
     [
       'hsla(',
-      Math.floor(hue),
+      hue,
       ', ',
       saturation,
       '%, ',
-      type === '_' ? 100 : luminosity,
+      luminosity,
       '%, ',
-      type === '_' ? opacity * 0.6 : opacity,
+      opacity,
       ')',
     ].join(''),
   );
-}
 
 export function updateBox(
   box: GraphicWithType,

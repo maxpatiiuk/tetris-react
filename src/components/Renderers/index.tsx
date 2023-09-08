@@ -2,7 +2,7 @@ import React from 'react';
 
 import { localization } from '../../localization';
 import { GridRenderer } from '../GridRenderer';
-import { PanoramaRenderer, SceneryRenderer } from '../MapRenderer/MapRenderer';
+import { PanoramaRenderer, SceneryRenderer } from '../MapRenderer';
 import { buttonClassName as buttonClassName } from '../UserInterface/Components';
 import type { Renderer } from './types';
 

@@ -6,7 +6,7 @@ import { useSong } from './useSong';
 type IframeApi = {
   readonly createController: (
     element: HTMLElement,
-    options: { readonly uri: string; readonly theme?: 'darl' },
+    options: { readonly uri: string; readonly theme?: 'dark' },
     callback: (controller: EmbedController) => void,
   ) => void;
 };
@@ -76,7 +76,9 @@ export function Spotify(): JSX.Element {
     const removeListener = controller.on(
       'playback_update',
       ({ data: { position, duration } }) => {
-        if (position !== 0 || position !== duration) return;
+        if (position === 0 || position !== duration) return;
+        controller.loadUri(getSong());
+        controller.play();
       },
     );
 
