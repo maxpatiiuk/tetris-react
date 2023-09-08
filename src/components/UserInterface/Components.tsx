@@ -1,2 +1,2 @@
-export const fancyButtonClassName =
-  'bg-white hover:bg-gray-400 mt-6 p-5 text-black';
+export const buttonClassName =
+  'bg-white hover:bg-gray-200 p-4 rounded text-black';

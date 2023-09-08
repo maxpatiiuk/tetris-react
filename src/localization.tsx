@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const localization = {
-  title: 'Tetris',
+  title: 'Tetris React',
   paused: 'Game is paused',
   esc: 'ESC',
   pressKeyToResume: (key: JSX.Element): JSX.Element => (
