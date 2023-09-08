@@ -6,9 +6,11 @@ import { fancyButtonClassName } from './Components';
 export function GameOverOverlay({
   score,
   onRestart: handleRestart,
+  onChangeMap: handleChangeMap,
 }: {
   readonly score: number;
-  onRestart: () => void;
+  readonly onRestart: () => void;
+  readonly onChangeMap: () => void;
 }): JSX.Element {
   const [bestScore, setBestScore] = useBestScore();
   const previousBestScore = React.useRef(bestScore).current;
@@ -19,7 +21,7 @@ export function GameOverOverlay({
   );
 
   return (
-    <div className="flex items-center justify-center text-3xl text-center">
+    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-3xl text-center">
       <span>
         <h1 className="pb-4 text-6xl">{localization.gameOver}</h1>
         <h2>
@@ -28,13 +30,22 @@ export function GameOverOverlay({
         <h2>
           {localization.yourBestScore} {previousBestScore}
         </h2>
-        <button
-          type="button"
-          className={fancyButtonClassName}
-          onClick={handleRestart}
-        >
-          {localization.playAgain}
-        </button>
+        <div className="flex gap-4">
+          <button
+            type="button"
+            className={fancyButtonClassName}
+            onClick={handleRestart}
+          >
+            {localization.playAgain}
+          </button>
+          <button
+            type="button"
+            className={fancyButtonClassName}
+            onClick={handleChangeMap}
+          >
+            {localization.changeMap}
+          </button>
+        </div>
       </span>
     </div>
   );

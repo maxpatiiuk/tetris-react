@@ -10,7 +10,7 @@ export function PauseOverlay({
   readonly onLoad: () => void;
 }) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center w-screen h-screen text-4xl text-center bg-black opacity-75">
+    <div className="absolute inset-0 flex items-center justify-center w-screen h-screen text-4xl text-center bg-black/70">
       <span>
         {localization.paused}
         <br />
