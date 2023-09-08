@@ -1,7 +1,8 @@
-import { boardX, boardY, scoreMultiplier, shapes, Shape } from '../../config';
-import { RA } from '../../lib/types';
-import { GameState, ShapeLocation, ShapeLocationWritable } from './types';
+import type { Shape } from '../../config';
+import { boardX, boardY, scoreMultiplier, shapes } from '../../config';
+import type { RA } from '../../lib/types';
 import { flattenShape } from './transformShapes';
+import type { GameState, ShapeLocation, ShapeLocationWritable } from './types';
 
 export function spawnNewShape(state: GameState): GameState | undefined {
   const shapeDefinition = shapes[state.nextShape].definition;
@@ -92,7 +93,7 @@ export function updateBoard(
 
 const removeCompletedRows = (
   state: GameState,
-  rowsToRemove: number[],
+  rowsToRemove: readonly number[],
 ): GameState =>
   rowsToRemove.length === 0
     ? state
@@ -104,12 +105,14 @@ const removeCompletedRows = (
          */
         score: (state.score + scoreMultiplier * 2) ^ (rowsToRemove.length - 1),
         board: [
-          ...new Array(rowsToRemove.length).fill(new Array(boardX).fill('_')),
+          ...Array.from({ length: rowsToRemove.length }).fill(
+            new Array(boardX).fill('_'),
+          ),
           ...state.board.filter((_, index) => !rowsToRemove.includes(index)),
         ],
       };
 
-const findCompletedRows = (board: RA<RA<Shape>>): number[] =>
+const findCompletedRows = (board: RA<RA<Shape>>): readonly number[] =>
   board
     .map((row, index) => ({
       isCompleted: row.every((cell) => cell !== '_'),

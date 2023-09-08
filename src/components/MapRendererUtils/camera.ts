@@ -1,15 +1,16 @@
-import Point from '@arcgis/core/geometry/Point';
-import Mesh from '@arcgis/core/geometry/Mesh';
-import { expose } from '../../lib/utils';
 import Camera from '@arcgis/core/Camera';
-import SceneView from '@arcgis/core/views/SceneView';
+import Mesh from '@arcgis/core/geometry/Mesh';
+import Point from '@arcgis/core/geometry/Point';
+import type SceneView from '@arcgis/core/views/SceneView';
+
+import { expose } from '../../lib/utils';
 
 export const centerPoint = new Point({
   spatialReference: {
-    wkid: 102100,
+    wkid: 102_100,
   },
-  x: -8239043,
-  y: 4969106,
+  x: -8_239_043,
+  y: 4_969_106,
   z: 250,
 });
 

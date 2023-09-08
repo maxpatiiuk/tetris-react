@@ -1,9 +1,10 @@
-import SceneView from '@arcgis/core/views/SceneView';
-import Graphic from '@arcgis/core/Graphic';
+import type Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
+import type SceneView from '@arcgis/core/views/SceneView';
+
 import { expose } from '../../lib/utils';
-import { rotateCamera } from './camera';
 import { displayBox, rotateGraphic } from './box';
+import { rotateCamera } from './camera';
 
 const second = 1000;
 const frameRate = 60;
@@ -17,7 +18,7 @@ export function startMovement(view: SceneView, animated: boolean) {
     rotateCamera(view, angle);
   }
 
-  let boxes: Graphic[] = [];
+  const boxes: readonly Graphic[] = [];
   function spawnBox(offsetBlocksX: number = 0, offsetBlocksY: number = 0) {
     const box = displayBox(
       graphicsLayer,

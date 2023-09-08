@@ -1,9 +1,11 @@
 import React from 'react';
+
+import type { Shape } from '../../config';
+import { shapes } from '../../config';
 import { useBestScore } from '../../hooks/useCache';
-import { shapes, Shape } from '../../config';
+import type { RA } from '../../lib/types';
 import { localization } from '../../localization';
-import { RA } from '../../lib/types';
-import { RendererProps } from '../Renderers/types';
+import type { RendererProps } from '../Renderers/types';
 
 export function GridRenderer({
   board,

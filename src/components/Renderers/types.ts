@@ -1,5 +1,5 @@
-import { Shape } from '../../config';
-import { RA } from '../../lib/types';
+import type { Shape } from '../../config';
+import type { RA } from '../../lib/types';
 
 export type RendererProps = {
   readonly board: RA<RA<Shape>>;

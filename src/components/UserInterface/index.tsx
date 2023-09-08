@@ -3,13 +3,14 @@
  */
 
 import React from 'react';
+
 import { initialSpeed, scoreMultiplier } from '../../config';
-import { Direction } from '../State/types';
-import { IR } from '../../lib/types';
-import { Renderer } from '../Renderers/types';
-import { RendererPick } from '../Renderers';
-import { reducers } from '../State/reducer';
 import { useGameState } from '../../hooks/useCache';
+import type { IR } from '../../lib/types';
+import { RendererPick } from '../Renderers';
+import type { Renderer } from '../Renderers/types';
+import { reducers } from '../State/reducer';
+import { Direction } from '../State/types';
 import { GameOverOverlay } from './GameOverOverlay';
 import { PauseOverlay } from './PauseOverlay';
 
@@ -22,7 +23,7 @@ export function Tetris(): JSX.Element {
     <Game
       renderer={renderer}
       onChangeMap={(): void => setRenderer(undefined)}
-    ></Game>
+    />
   );
 }
 
@@ -46,8 +47,8 @@ function Game({
       {typeof gameOverScore === 'number' && (
         <GameOverOverlay
           score={gameOverScore}
-          onRestart={(): void => setGameOverScore(undefined)}
           onChangeMap={handleChangeMap}
+          onRestart={(): void => setGameOverScore(undefined)}
         />
       )}
     </>
@@ -59,9 +60,9 @@ function DisplayRenderer({
   onGameOver: handleGameOver,
   isGameOver,
 }: {
-  renderer: Renderer;
-  onGameOver: (score: number) => void;
-  isGameOver: boolean;
+  readonly renderer: Renderer;
+  readonly onGameOver: (score: number) => void;
+  readonly isGameOver: boolean;
 }): JSX.Element {
   const [state, setState] = React.useState(reducers.initial);
   const stateRef = React.useRef(state);
@@ -107,19 +108,19 @@ function DisplayRenderer({
     <div className="flex items-center justify-center w-screen h-screen text-white bg-black">
       {state.paused && (
         <PauseOverlay
-          onSave={(): void => setSavedState(state)}
           onLoad={() =>
             setState({
               ...savedState,
               paused: false,
             })
           }
+          onSave={(): void => setSavedState(state)}
         />
       )}
       <Renderer
         board={state.board}
-        score={state.score}
         nextShape={state.nextShape}
+        score={state.score}
       />
     </div>
   );

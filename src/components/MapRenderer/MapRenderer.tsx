@@ -1,14 +1,15 @@
-import React from 'react';
-import SceneView from '@arcgis/core/views/SceneView';
+import './styles.css';
+
 import Basemap from '@arcgis/core/Basemap';
 import Map from '@arcgis/core/Map';
 import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
-import { expose } from '../../lib/utils';
-import { cameraMesh } from '../MapRendererUtils/camera';
+import SceneView from '@arcgis/core/views/SceneView';
+import React from 'react';
 
-import './styles.css';
+import { expose } from '../../lib/utils';
 import { startMovement } from '../MapRendererUtils';
-import { RendererProps } from '../Renderers/types';
+import { cameraMesh } from '../MapRendererUtils/camera';
+import type { RendererProps } from '../Renderers/types';
 
 const mapRenderer = (animated: boolean) =>
   function MapRenderer({ ...state }: RendererProps) {
@@ -34,9 +35,9 @@ const mapRenderer = (animated: boolean) =>
             cloudCover: 0.3,
           }),
           lighting: {
-            // enable shadows for all the objects in a scene
+            // Enable shadows for all the objects in a scene
             directShadowsEnabled: true,
-            // set the date and a time of the day for the current camera location
+            // Set the date and a time of the day for the current camera location
             date: new Date('Sun Mar 15 2019 16:00:00 GMT+0100 (CET)'),
           },
         },

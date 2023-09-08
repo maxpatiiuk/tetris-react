@@ -1,16 +1,17 @@
-import Graphic from '@arcgis/core/Graphic';
-import Point from '@arcgis/core/geometry/Point';
-import { blockSize } from './config';
+import Color from '@arcgis/core/Color';
 import Mesh from '@arcgis/core/geometry/Mesh';
-import { cameraMesh, centerPoint, rotateMesh } from './camera';
-import { computeOffsets } from './offsets';
-import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
-import SceneView from '@arcgis/core/views/SceneView';
-import MeshSymbol3d from '@arcgis/core/symbols/MeshSymbol3d';
-import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
+import type Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import type GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SketchEdges3D from '@arcgis/core/symbols/edges/SketchEdges3D';
 import SolidEdges3D from '@arcgis/core/symbols/edges/SolidEdges3D';
-import Color from '@arcgis/core/Color';
+import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
+import MeshSymbol3d from '@arcgis/core/symbols/MeshSymbol3d';
+import type SceneView from '@arcgis/core/views/SceneView';
+
+import { cameraMesh, centerPoint, rotateMesh } from './camera';
+import { blockSize } from './config';
+import { computeOffsets } from './offsets';
 
 export function rotateGraphic(graphic: Graphic, angle: number): void {
   const mesh = graphic.geometry as Mesh;

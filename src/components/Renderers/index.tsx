@@ -1,9 +1,10 @@
-import { Renderer } from './types';
+import React from 'react';
+
 import { localization } from '../../localization';
 import { GridRenderer } from '../GridRenderer';
 import { PanoramaRenderer, SceneryRenderer } from '../MapRenderer/MapRenderer';
 import { fancyButtonClassName as buttonClassName } from '../UserInterface/Components';
-import React from 'react';
+import type { Renderer } from './types';
 
 const renderers = {
   [localization.panoramaRenderer]: PanoramaRenderer,
@@ -20,9 +21,9 @@ export function RendererPick({
     <>
       {Object.entries(renderers).map(([label, renderer]) => (
         <button
+          className={buttonClassName}
           key={label}
           type="button"
-          className={buttonClassName}
           onClick={(): void => handleSelect(renderer)}
         >
           {label}

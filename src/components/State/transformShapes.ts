@@ -1,5 +1,6 @@
-import { Direction, ShapeLocation } from './types';
-import { RA } from '../../lib/types';
+import type { RA } from '../../lib/types';
+import type { ShapeLocation } from './types';
+import { Direction } from './types';
 
 export const flattenShape = (shape: ShapeLocation): RA<RA<number>> =>
   Object.entries(shape).flatMap(([rowIndex, row]) =>
@@ -110,7 +111,7 @@ const matrixToShape = (
   );
 
 const rotateMatrixTimes = <T>(times: number, matrix: RA<RA<T>>) =>
-  Array.from(new Array(times % 4)).reduce<RA<RA<T>>>(
+  Array.from(Array.from({ length: times % 4 })).reduce<RA<RA<T>>>(
     (matrix) => rotateMatrix(matrix),
     matrix,
   );
@@ -124,7 +125,7 @@ const transposeMatrix = <T>(matrix: RA<RA<T>>) =>
 const reverseMatrix = <T>(matrix: RA<RA<T>>) =>
   matrix.map((row) => row.slice().reverse());
 
-const shapeToMatrix = (shape: ShapeLocation): (0 | 1)[][] =>
+const shapeToMatrix = (shape: ShapeLocation): readonly (readonly (0 | 1)[])[] =>
   [shape]
     .map((shape) => ({
       shape,
