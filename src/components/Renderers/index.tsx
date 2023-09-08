@@ -7,8 +7,8 @@ import { buttonClassName as buttonClassName } from '../UserInterface/Components'
 import type { Renderer } from './types';
 
 const renderers = {
-  [localization.panoramaRenderer]: PanoramaRenderer,
   [localization.sceneryRenderer]: SceneryRenderer,
+  [localization.panoramaRenderer]: PanoramaRenderer,
   [localization.gridRenderer]: GridRenderer,
 } as const;
 

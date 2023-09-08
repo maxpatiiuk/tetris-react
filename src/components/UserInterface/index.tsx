@@ -75,7 +75,7 @@ function DisplayRenderer({
     function gameLoop(): void {
       const { isGameOver = false, ...newState } = reducers.gravity(
         stateRef.current,
-        // Need to give a seed here, since the reducer is pure
+        // Need to give a seed here to keep the reducer pure
         Math.floor(Math.random() * 100),
       );
       if (isGameOver) handleGameOver(stateRef.current.score);

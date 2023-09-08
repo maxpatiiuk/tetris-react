@@ -12,7 +12,7 @@ import { cameraMesh, stationaryCamera } from '../MapRendererUtils/camera';
 import type { RendererProps } from '../Renderers/types';
 
 const mapRenderer = (isAnimated: boolean) =>
-  function MapRenderer({ isPaused, board, ...state }: RendererProps) {
+  function MapRenderer({ isPaused, board, nextShape, score }: RendererProps) {
     const [mapContainer, setMap] = React.useState<HTMLDivElement | null>(null);
     const [view, setView] = React.useState<SceneView | undefined>(undefined);
 
@@ -56,6 +56,9 @@ const mapRenderer = (isAnimated: boolean) =>
       view.when(() => {
         // Disable labels
         view.map.allLayers.at(2).visible = false;
+
+        // Remove all widgets
+        view.ui.remove(view.ui.getComponents());
 
         setView(view);
       });
