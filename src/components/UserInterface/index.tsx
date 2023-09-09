@@ -126,6 +126,8 @@ function DisplayRenderer({
         activeKey = undefined;
         if (event.key === 'Escape' || event.key === 'p')
           setState(reducers.togglePause(stateRef.current));
+        else if (event.key === ' ')
+          setState(reducers.hardDrop(stateRef.current));
       }
     }
 
