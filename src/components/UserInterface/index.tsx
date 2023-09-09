@@ -110,20 +110,54 @@ function DisplayRenderer({
     if (isGameOver) return undefined;
     setState(reducers.initial);
 
+    document.addEventListener('keydown', captureKeyDown, { capture: true });
     function captureKeyDown(event: KeyboardEvent): void {
-      if (event.key === 'Escape' || event.key === 'p')
-        setState(reducers.togglePause(stateRef.current));
-      else if (event.key in keyMapping) {
-        setState(reducers.move(stateRef.current, keyMapping[event.key]));
+      if (event.key !== activeKey) clearTimeout(timeout);
+
+      if (event.key in keyMapping) {
+        pressedKeys.add(event.key);
+        if (activeKey !== event.key) {
+          activeKey = event.key;
+          move();
+        }
         event.preventDefault();
         event.stopPropagation();
+      } else {
+        activeKey = undefined;
+        if (event.key === 'Escape' || event.key === 'p')
+          setState(reducers.togglePause(stateRef.current));
       }
     }
-    document.addEventListener('keydown', captureKeyDown, { capture: true });
-    return (): void =>
+
+    let activeKey: string | undefined = undefined;
+    let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
+    const pressedKeys = new Set<string>();
+    const keyRepeatSpeed = 90;
+
+    function move() {
+      if (activeKey === undefined) return;
+
+      setState(reducers.move(stateRef.current, keyMapping[activeKey]));
+      if (activeKey !== 'ArrowUp') timeout = setTimeout(move, keyRepeatSpeed);
+    }
+
+    document.addEventListener('keyup', captureKeyUp, { capture: true });
+    function captureKeyUp(event: KeyboardEvent): void {
+      pressedKeys.delete(event.key);
+      if (event.key !== activeKey) return;
+      activeKey = Array.from(pressedKeys)[0];
+      clearTimeout(timeout);
+      move();
+    }
+
+    return (): void => {
       document.removeEventListener('keydown', captureKeyDown, {
         capture: true,
       });
+      document.removeEventListener('keyup', captureKeyUp, {
+        capture: true,
+      });
+    };
   }, [isGameOver]);
 
   return (
