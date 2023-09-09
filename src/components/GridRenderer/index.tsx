@@ -56,8 +56,6 @@ function GameAside({
   const [bestScore] = useBestScore();
   return (
     <div className="p-2 overflow-hidden">
-      {localization.instructions}
-      <br />
       <span className="text-4xl">
         {localization.score}
         <span className={score > bestScore ? 'text-red-500' : undefined}>
