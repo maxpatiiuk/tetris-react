@@ -22,4 +22,8 @@ export const localization = {
   gridRenderer: 'Grid World',
   changeMap: 'Change Map',
   nextSong: 'Next Song',
+  inspiredBy: (linkify: (label: string) => JSX.Element): JSX.Element => (
+    <>Inspired by {linkify('Tetris Effect')}</>
+  ),
+  sourceCode: 'Source Code',
 };
