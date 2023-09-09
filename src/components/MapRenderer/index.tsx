@@ -11,6 +11,7 @@ import { useMovement as useBoard } from '../MapRendererUtils';
 import { cameraMesh, stationaryCamera } from '../MapRendererUtils/camera';
 import type { RendererProps } from '../Renderers/types';
 import { useEffects } from './useEffects';
+import { GameAside } from '../Renderers/GameAside';
 
 const mapRenderer = (isAnimated: boolean) =>
   function MapRenderer({ isPaused, board, nextShape, score }: RendererProps) {
@@ -67,7 +68,14 @@ const mapRenderer = (isAnimated: boolean) =>
     useBoard(view, board, isAnimated, isPaused);
     useEffects(view, score);
 
-    return <div className="w-full h-full" ref={setMap} />;
+    return (
+      <>
+        <div className="w-full h-full" ref={setMap} />
+        <div className="absolute top-0 right-0 drop-shadow-[0_1px_2px_#000]">
+          <GameAside score={score} nextShape={nextShape} />
+        </div>
+      </>
+    );
   };
 
 export const PanoramaRenderer = mapRenderer(true);

@@ -23,7 +23,7 @@ export function GameOverOverlay({
 
   return (
     <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-3xl text-center">
-      <span>
+      <span className="flex flex-col gap-4">
         <h1 className="pb-4 text-6xl">{localization.gameOver}</h1>
         <h2>
           {localization.yourScore} {score}

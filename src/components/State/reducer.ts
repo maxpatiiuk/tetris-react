@@ -63,7 +63,7 @@ export const reducers = {
     };
 
     return Object.keys(newState.currentShapeLocation).length === 0
-      ? spawnNewShape(newState)
+      ? spawnNewShape(newState, shapeNames[seed % shapeNames.length])
       : updateBoard(
           newState,
           moveShape(newState.currentShapeLocation, Direction.DOWN),
