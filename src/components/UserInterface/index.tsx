@@ -85,6 +85,13 @@ function DisplayRenderer({
 
   const [savedState, setSavedState] = useGameState();
 
+  // Re-run game loop immediately if new shape is placed
+  const isPlaced = Object.keys(state.currentShapeLocation).length === 0;
+  const refIsPlaced = React.useRef(isPlaced);
+  const placedShapes = React.useRef(0);
+  if (isPlaced && !refIsPlaced.current) placedShapes.current += 1;
+  refIsPlaced.current = isPlaced;
+
   React.useEffect(() => {
     if (isGameOver) return undefined;
     function gameLoop(): void {
@@ -104,7 +111,7 @@ function DisplayRenderer({
       initialSpeed / Math.log(3 + state.score / scoreMultiplier),
     );
     return (): void => clearInterval(interval);
-  }, [state.score, isGameOver]);
+  }, [placedShapes.current, isGameOver]);
 
   React.useEffect(() => {
     if (isGameOver) return undefined;
