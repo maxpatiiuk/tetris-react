@@ -6,6 +6,7 @@ import type { GameState, ShapeLocation, ShapeLocationWritable } from './types';
 
 export function spawnNewShape(
   state: GameState,
+  nextShape: Shape,
 ): GameState & { readonly isGameOver: boolean } {
   const shapeDefinition = shapes[state.nextShape].definition;
   const shapeWidth = shapeDefinition[0].length;
@@ -21,13 +22,9 @@ export function spawnNewShape(
 
   const currentShapeLocation: ShapeLocationWritable = {};
 
-  // Probably the most impure function in this entire game
   function updateCurrentShape(rowIndex: number, cellIndex: number) {
-    if (!(rowIndex in currentShapeLocation))
-      currentShapeLocation[rowIndex] = {};
-    if (!(cellIndex in currentShapeLocation[rowIndex]))
-      currentShapeLocation[rowIndex][cellIndex] = true;
-
+    currentShapeLocation[rowIndex] ??= {};
+    currentShapeLocation[rowIndex][cellIndex] = true;
     return state.nextShape;
   }
 
@@ -35,7 +32,7 @@ export function spawnNewShape(
     ...state,
     isGameOver,
     currentShape: state.nextShape,
-    nextShape: '_',
+    nextShape,
     currentShapeLocation,
     board: state.board.map((row, rowIndex) =>
       row.map((cell, cellIndex) =>
