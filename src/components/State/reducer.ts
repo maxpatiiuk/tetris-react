@@ -42,6 +42,16 @@ export const reducers = {
           ),
         ),
 
+  hardDrop(state: GameState): GameState {
+    let previousState = state;
+    let localState = state;
+    while (Object.keys(previousState.currentShapeLocation).length > 0) {
+      previousState = localState;
+      localState = reducers.move(previousState, Direction.DOWN);
+    }
+    return localState;
+  },
+
   gravity(
     state: GameState,
     seed: number,
