@@ -1,6 +1,7 @@
-node_modules
-.next
-.swc
 .env*.local
-tsconfig.tsbuildinfo
+.next
+.vite
+.swc
 dist
+node_modules
+tsconfig.tsbuildinfo
