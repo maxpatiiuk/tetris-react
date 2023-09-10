@@ -58,7 +58,7 @@ const mapRenderer = (cameraType: Camera['type']) =>
     const scoreRef = React.useRef(score);
     const scoreDecreased = scoreRef.current > score;
     const gameCount = React.useRef(0);
-    if (scoreDecreased) gameCount.current += 1;
+    if (scoreDecreased && cameraType === 'stationary') gameCount.current += 1;
     scoreRef.current = score;
     React.useEffect(() => {
       if (view === undefined) return;
