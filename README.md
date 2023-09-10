@@ -20,16 +20,18 @@ Enjoy simple old-school tetris.
 
 ![](./docs/grid-world.jpg)
 
-[Documentation and dev process description](https://max.patii.uk/projects/tetris-react)
+## Instructions
 
-While playing, enjoy a curated playlist from an award-winning musical artist [Hydelic](https://open.spotify.com/artist/6agnjQgwC8fwGFsM6NKSaH).
+While playing, enjoy a curated playlist from an award-winning musical artist [Hydelic](https://open.spotify.com/artist/6agnjQgwC8fwGFsM6NKSaH). To enjoy music autoplay, make sure to sign in to your Spotify account.
+
+[Documentation and dev process description](https://max.patii.uk/projects/tetris-react)
 
 ## Installation
 
 - Clone this repository:
 
   ```sh
-  git clone https://github.com/maxxxxxdlp/arcgis-tetris/
+  git clone https://github.com/maxxxxxdlp/tetris-react/
   ```
 
 - Install dependencies:
