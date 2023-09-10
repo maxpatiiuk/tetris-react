@@ -92,7 +92,6 @@ function DisplayRenderer({
   if (isPlaced && !refIsPlaced.current) placedShapes.current += 1;
   refIsPlaced.current = isPlaced;
 
-  // FIXME: make shapes more fare
   React.useEffect(() => {
     if (isGameOver) return undefined;
     function gameLoop(): void {
