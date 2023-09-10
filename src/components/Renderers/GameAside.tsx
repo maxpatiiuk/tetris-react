@@ -25,6 +25,7 @@ export function GameAside({
           <span
             style={{
               color: hueComponentsToColor(shapes[nextShape].color),
+              colorScheme: 'white only',
             }}
           >
             {nextShape}
