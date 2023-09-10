@@ -51,7 +51,19 @@ const mapRenderer = (cameraType: Camera['type']) =>
         setView(view);
       });
       expose({ camera, map, view });
-    }, [mapContainer]);
+
+      return (): void => view.destroy();
+    }, [mapContainer, camera]);
+
+    const scoreRef = React.useRef(score);
+    const scoreDecreased = scoreRef.current > score;
+    const gameCount = React.useRef(0);
+    if (scoreDecreased) gameCount.current += 1;
+    scoreRef.current = score;
+    React.useEffect(() => {
+      if (view === undefined) return;
+      view.camera = camera.initialCamera;
+    }, [view, camera, gameCount.current]);
 
     useBoard(view, board, camera, isPaused);
     useEffects(view, score);
