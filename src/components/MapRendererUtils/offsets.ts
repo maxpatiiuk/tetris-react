@@ -1,22 +1,23 @@
 import Point from '@arcgis/core/geometry/Point';
 
-import { cameraMesh, centerPoint } from './camera';
 import { blockSize } from './config';
+import { Vector } from './config';
+import { Camera } from './camera';
 
 /**
  * Compute x, y and z to offset a block by a given number of blocks on a plane
  * between two points (center point and camera)
  */
 export function computeOffsets(
-  offsetBlocksX: number,
-  offsetBlocksY: number,
+  camera: Camera,
+  { x: offsetBlocksX, y: offsetBlocksY }: Vector,
 ): Point {
-  const direction = normalize(computeDirection());
+  const direction = normalize(computeDirection(camera));
   const offsetMagnitudeY = perpendicularOne(direction);
   const offsetMagnitudeX = perpendicularTwo(direction, offsetMagnitudeY);
 
-  const xSize = blockSize * 13;
-  const ySize = blockSize * 10;
+  const xSize = blockSize * 0.75;
+  const ySize = blockSize * 0.55;
   return new Point({
     x:
       offsetMagnitudeX.x * offsetBlocksX * xSize +
@@ -30,11 +31,11 @@ export function computeOffsets(
   });
 }
 
-const computeDirection = (): Point =>
+const computeDirection = ({ centerPoint, startPoint }: Camera): Point =>
   new Point({
-    x: centerPoint.x - cameraMesh.extent.center.x,
-    y: centerPoint.y - cameraMesh.extent.center.y,
-    z: centerPoint.z - cameraMesh.extent.center.z,
+    x: centerPoint.x - startPoint.x,
+    y: centerPoint.y - startPoint.y,
+    z: centerPoint.z - startPoint.z,
   });
 
 function normalize(point: Point): Point {

@@ -92,6 +92,8 @@ function DisplayRenderer({
   if (isPlaced && !refIsPlaced.current) placedShapes.current += 1;
   refIsPlaced.current = isPlaced;
 
+  // FIXME: make shapes more fare
+  // FIXME: reset camera after restart
   React.useEffect(() => {
     if (isGameOver) return undefined;
     function gameLoop(): void {
@@ -141,7 +143,7 @@ function DisplayRenderer({
     let activeKey: string | undefined = undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
     const pressedKeys = new Set<string>();
-    const keyRepeatSpeed = 90;
+    const keyRepeatSpeed = 100;
 
     function move() {
       if (activeKey === undefined) return;

@@ -1,22 +1,28 @@
 import Color from '@arcgis/core/Color';
 import Mesh from '@arcgis/core/geometry/Mesh';
-import type Point from '@arcgis/core/geometry/Point';
+import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import type GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SketchEdges3D from '@arcgis/core/symbols/edges/SketchEdges3D';
 import SolidEdges3D from '@arcgis/core/symbols/edges/SolidEdges3D';
 import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
 import MeshSymbol3d from '@arcgis/core/symbols/MeshSymbol3d';
-import type SceneView from '@arcgis/core/views/SceneView';
 
-import { cameraMesh, centerPoint, rotateMesh } from './camera';
+import { Camera } from './camera';
 import { blockSize } from './config';
 import { computeOffsets } from './offsets';
 import { Shape, shapes } from '../../config';
+import { Vector } from './config';
 
-export function rotateGraphic(graphic: Graphic, angle: number): void {
+export function rotateGraphic(
+  graphic: Graphic,
+  angle: number,
+  camera: Camera,
+): void {
   const mesh = graphic.geometry as Mesh;
-  graphic.geometry = rotateMesh(mesh, angle).clone();
+  graphic.geometry = mesh
+    .rotate(0, 0, angle, { origin: camera.centerPoint })
+    .clone();
 }
 
 export type GraphicWithType = Graphic & {
@@ -25,32 +31,29 @@ export type GraphicWithType = Graphic & {
 
 export function displayBox(
   graphicsLayer: GraphicsLayer,
-  view: SceneView,
   shape: Shape,
-  sketchEdges: boolean,
-  offsetBlocksX: number = 0,
-  offsetBlocksY: number = 0,
+  camera: Camera,
+  offset: Vector = { x: 0, y: 0 },
 ): GraphicWithType {
-  const offsets = computeOffsets(offsetBlocksX, offsetBlocksY);
+  const offsets = computeOffsets(camera, offset);
 
-  const newPosition = cameraMesh.extent.center.clone();
-  newPosition.x = mixPoints(centerPoint.x, newPosition.x) + offsets.x;
-  newPosition.y = mixPoints(centerPoint.y, newPosition.y) + offsets.y;
-  newPosition.z = mixPoints(centerPoint.z, newPosition.z) + offsets.z;
+  const { centerPoint } = camera;
 
-  const box = createBox(newPosition, shape, sketchEdges);
+  const newPosition = camera.startPoint.clone();
+  const mixPoints = mix.bind(undefined, camera.blockPosition);
+  newPosition.x = mixPoints(centerPoint.x, camera.startPoint.x) - offsets.x;
+  newPosition.y = mixPoints(centerPoint.y, camera.startPoint.y) - offsets.y;
+  newPosition.z = mixPoints(centerPoint.z, camera.startPoint.z) - offsets.z;
+
+  const box = createBox(newPosition, shape, camera.sketchEdges);
+  rotateGraphic(box, camera.initialAngle, camera);
   graphicsLayer.add(box);
-  // FIXME: if this is called before first 5 seconds, it doesn't work. Why?
-  view.map.add(graphicsLayer);
 
   return box;
 }
 
 const mix = (ratio: number, left: number, right: number): number =>
   left * (1 - ratio) + right * ratio;
-
-const distanceFromCenter = 0.5;
-const mixPoints = mix.bind(undefined, distanceFromCenter);
 
 function createBox(
   position: Point,
@@ -86,7 +89,7 @@ function getSymbol(
             ? undefined
             : sketchEdges
             ? new SketchEdges3D({
-                size: blockSize * 0.15,
+                size: blockSize * 0.5,
                 color: color(shape, 0.9),
               })
             : new SolidEdges3D({
@@ -135,8 +138,8 @@ export const buildColor = (
 export function updateBox(
   box: GraphicWithType,
   shape: Shape,
-  sketchEdges: boolean,
+  camera: Camera,
 ): void {
   if (box.symbol.shape === shape) return;
-  box.symbol = getSymbol(shape, sketchEdges);
+  box.symbol = getSymbol(shape, camera.sketchEdges);
 }

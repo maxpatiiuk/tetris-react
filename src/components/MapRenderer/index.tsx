@@ -2,19 +2,20 @@ import './styles.css';
 
 import Basemap from '@arcgis/core/Basemap';
 import Map from '@arcgis/core/Map';
-import CloudyWeather from '@arcgis/core/views/3d/environment/CloudyWeather';
 import SceneView from '@arcgis/core/views/SceneView';
 import React from 'react';
 
 import { expose } from '../../lib/utils';
 import { useMovement as useBoard } from '../MapRendererUtils';
-import { cameraMesh, stationaryCamera } from '../MapRendererUtils/camera';
+import { Camera, getCameras } from '../MapRendererUtils/camera';
 import type { RendererProps } from '../Renderers/types';
 import { useEffects } from './useEffects';
 import { GameAside } from '../Renderers/GameAside';
 
-const mapRenderer = (isAnimated: boolean) =>
+const mapRenderer = (cameraType: Camera['type']) =>
   function MapRenderer({ isPaused, board, nextShape, score }: RendererProps) {
+    const camera = React.useMemo(() => getCameras(cameraType), [cameraType]);
+
     const [mapContainer, setMap] = React.useState<HTMLDivElement | null>(null);
     const [view, setView] = React.useState<SceneView | undefined>(undefined);
 
@@ -24,7 +25,8 @@ const mapRenderer = (isAnimated: boolean) =>
       const map = new Map({
         basemap: new Basemap({
           portalItem: {
-            id: '0560e29930dc4d5ebeb58c635c0909c9', // References the 3D Topographic Basemap
+            // References the 3D Topographic Basemap
+            id: '0560e29930dc4d5ebeb58c635c0909c9',
           },
         }),
       });
@@ -33,23 +35,9 @@ const mapRenderer = (isAnimated: boolean) =>
         container: mapContainer,
         map,
         environment: {
-          weather: new CloudyWeather({
-            cloudCover: 0.3,
-          }),
-          lighting: {
-            // Enable shadows for all the objects in a scene
-            directShadowsEnabled: true,
-            // Set the date and a time of the day for the current camera location
-            date: new Date('Sun Mar 15 2019 16:00:00 GMT+0100 (CET)'),
-          },
+          lighting: { directShadowsEnabled: true },
         },
-        camera: isAnimated
-          ? {
-              position: cameraMesh.extent.center,
-              heading: 0,
-              tilt: 90,
-            }
-          : stationaryCamera,
+        camera: camera.initialCamera,
         qualityProfile: 'high',
       });
 
@@ -62,10 +50,10 @@ const mapRenderer = (isAnimated: boolean) =>
 
         setView(view);
       });
-      expose({ map, view });
+      expose({ camera, map, view });
     }, [mapContainer]);
 
-    useBoard(view, board, isAnimated, isPaused);
+    useBoard(view, board, camera, isPaused);
     useEffects(view, score);
 
     return (
@@ -78,5 +66,5 @@ const mapRenderer = (isAnimated: boolean) =>
     );
   };
 
-export const PanoramaRenderer = mapRenderer(true);
-export const SceneryRenderer = mapRenderer(false);
+export const PanoramaRenderer = mapRenderer('animated');
+export const SceneryRenderer = mapRenderer('stationary');
