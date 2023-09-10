@@ -32,8 +32,8 @@ function updateEnvironment(view: SceneView) {
 }
 
 function updateRenderer(view: SceneView): void {
-  const layer = view.map.allLayers.at(4) as SceneLayer;
-  layer.renderer = getRenderer();
+  const layer = view.map.allLayers.find(({title})=>title === 'Buildings');
+  if(layer !== undefined) (layer as SceneLayer).renderer = getRenderer();
 }
 
 const getRenderer = (hue = Math.floor(Math.random() * 365)): SimpleRenderer =>
