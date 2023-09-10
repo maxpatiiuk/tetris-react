@@ -3,7 +3,7 @@
  */
 
 import type { Shape } from '../../config';
-import { boardX, boardY, shapes } from '../../config';
+import { boardX, boardY } from '../../config';
 import type { RA } from '../../lib/types';
 import { moveShape } from './transformShapes';
 import type { GameState } from './types';
@@ -11,13 +11,13 @@ import { Direction } from './types';
 import { spawnNewShape, updateBoard } from './utils';
 
 export const reducers = {
-  initial: (): GameState => ({
+  initial: (nextShapes: RA<Shape>): GameState => ({
     board: Array.from<RA<Shape>>({ length: boardY }).fill(
       Array.from<Shape>({ length: boardX }).fill('_'),
     ),
     currentShapeLocation: {},
     currentShape: '_',
-    nextShape: '_',
+    nextShapes,
     score: 0,
     isPaused: false,
   }),
@@ -54,29 +54,15 @@ export const reducers = {
 
   gravity(
     state: GameState,
-    seed: number,
+    nextShape: Shape,
   ): GameState & { readonly isGameOver?: boolean } {
     if (state.isPaused) return state;
 
-    const shapeNames = Object.entries(shapes)
-      .filter(([, { spawn }]) => spawn)
-      .map(([shapeName]) => shapeName);
-
-    const nextShape =
-      state.nextShape === '_'
-        ? shapeNames[seed % shapeNames.length]
-        : state.nextShape;
-
-    const newState: GameState = {
-      ...state,
-      nextShape,
-    };
-
-    return Object.keys(newState.currentShapeLocation).length === 0
-      ? spawnNewShape(newState, shapeNames[seed % shapeNames.length])
+    return Object.keys(state.currentShapeLocation).length === 0
+      ? spawnNewShape(state, nextShape)
       : updateBoard(
-          newState,
-          moveShape(newState.currentShapeLocation, Direction.DOWN),
+          state,
+          moveShape(state.currentShapeLocation, Direction.DOWN),
         );
   },
 } as const;

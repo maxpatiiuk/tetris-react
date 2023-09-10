@@ -2,6 +2,7 @@ import React from 'react';
 
 import { reducers } from '../components/State/reducer';
 import type { GetSet } from '../lib/types';
+import { shapeRandomizer } from '../config';
 
 const prefix = 'tetris-react-';
 
@@ -55,4 +56,7 @@ function useGenericCache<T>(name: string, defaultValue: T): GetSet<T> {
 
 export const useBestScore = () => useGenericCache('bestScore', 0);
 export const useGameState = () =>
-  useGenericCache('gameState', reducers.initial());
+  useGenericCache(
+    'gameState',
+    reducers.initial(Array.from({ length: 5 }, shapeRandomizer)),
+  );

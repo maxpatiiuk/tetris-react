@@ -8,7 +8,8 @@ export function spawnNewShape(
   state: GameState,
   nextShape: Shape,
 ): GameState & { readonly isGameOver: boolean } {
-  const shapeDefinition = shapes[state.nextShape].definition;
+  const newShape = state.nextShapes[0];
+  const shapeDefinition = shapes[newShape].definition;
   const shapeWidth = shapeDefinition[0].length;
   const shapeOffset = Math.round((boardX - shapeWidth) / 2);
 
@@ -25,14 +26,14 @@ export function spawnNewShape(
   function updateCurrentShape(rowIndex: number, cellIndex: number) {
     currentShapeLocation[rowIndex] ??= {};
     currentShapeLocation[rowIndex][cellIndex] = true;
-    return state.nextShape;
+    return newShape;
   }
 
   return {
     ...state,
     isGameOver,
-    currentShape: state.nextShape,
-    nextShape,
+    currentShape: newShape,
+    nextShapes: [...state.nextShapes.slice(1),nextShape],
     currentShapeLocation,
     board: state.board.map((row, rowIndex) =>
       row.map((cell, cellIndex) =>

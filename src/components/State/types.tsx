@@ -13,7 +13,7 @@ export type GameState = {
   readonly score: number;
   readonly currentShape: Shape;
   readonly currentShapeLocation: ShapeLocation;
-  readonly nextShape: Shape;
+  readonly nextShapes: RA<Shape>;
   readonly isPaused: boolean;
 };
 

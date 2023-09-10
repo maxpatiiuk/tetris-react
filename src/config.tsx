@@ -3,7 +3,7 @@
  */
 
 import type { IR } from './lib/types';
-import { HueComponents } from './lib/utils';
+import { HueComponents, fairRandomItem } from './lib/utils';
 
 /*
  * Board size horizontal
@@ -103,5 +103,11 @@ export const shapes: IR<{
   /* eslint-enable @typescript-eslint/naming-convention */
   /* eslint-enable id-length */
 } as const;
+
+export const shapeRandomizer = fairRandomItem<keyof typeof shapes>(
+  Object.entries(shapes)
+    .filter(([, { spawn }]) => spawn)
+    .map(([shapeName]) => shapeName),
+);
 
 export type Shape = keyof typeof shapes;

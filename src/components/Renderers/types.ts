@@ -4,7 +4,7 @@ import type { RA } from '../../lib/types';
 export type RendererProps = {
   readonly board: RA<RA<Shape>>;
   readonly score: number;
-  readonly nextShape: Shape;
+  readonly nextShapes: RA<Shape>;
   readonly isPaused: boolean;
 };
 
