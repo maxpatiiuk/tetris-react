@@ -160,6 +160,7 @@ function DisplayRenderer({
     }
 
     return (): void => {
+      activeKey = undefined;
       document.removeEventListener('keydown', captureKeyDown, {
         capture: true,
       });
