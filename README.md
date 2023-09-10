@@ -1,30 +1,34 @@
 # Tetris React
 
-A Tetris game with 3 unique maps:
+A Tetris game with 3 unique maps.
+
+[Trailer](https://youtu.be/LlDgH-NZ3KE)
+
+[Play online](https://bit.ly/-tetris-react)
 
 ## Scenery World:
 
 Hover over the waterfront park of the New York City.
 
-![](./docs/scenery-world.jpg)
+[![](./docs/scenery-world.jpg)](https://youtu.be/LlDgH-NZ3KE)
 
 ## Panorama World:
 
 Circle around the downtown of the New York City.
 
-![](./docs/panorama-world.jpg)
+[![](./docs/panorama-world.jpg)](https://youtu.be/LlDgH-NZ3KE)
 
 ## Grid World:
 
 Enjoy simple old-school tetris.
 
-![](./docs/grid-world.jpg)
+[![](./docs/grid-world.jpg)](https://youtu.be/LlDgH-NZ3KE)
 
 ## Instructions
 
 While playing, enjoy a curated playlist from an award-winning musical artist [Hydelic](https://open.spotify.com/artist/6agnjQgwC8fwGFsM6NKSaH). To enjoy music autoplay, make sure to sign in to your Spotify account.
 
-[Documentation and dev process description](https://max.patii.uk/projects/tetris-react)
+[Technical documentation](https://max.patii.uk/projects/tetris-react)
 
 ## Installation
 
