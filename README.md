@@ -1,33 +1,54 @@
-# 3D Tetris in ArcGIS Maps SDK for JavaScript
+# Tetris React
 
-This repo demonstrates how to use
-[@arcgis/core](https://www.npmjs.com/package/@arcgis/core) ES modules with
-[React](https://reactjs.org/).
+A Tetris game with 3 unique maps:
 
-## Get Started
+## Scenery World:
 
-**Step 1** - Run `npm install` and then start adding modules.
+Hover over the waterfront park of the New York City.
 
-**Step 2** Configure CSS.
+![](./docs/scenery-world.jpg)
 
-_index.css_
+## Panorama World:
 
-```css
-@import 'https://js.arcgis.com/4.27/@arcgis/core/assets/esri/themes/light/main.css';
-```
+Circle around the downtown of the New York City.
 
-For additional information, see the
-[Build with ES modules](https://developers.arcgis.com/javascript/latest/es-modules/)
-Guide topic in the SDK.
+![](./docs/panorama-world.jpg)
 
-## Commands
+## Grid World:
 
-For a list of all available `npm` commands see the scripts in `package.json`.
+Enjoy simple old-school tetris.
 
-This project was bootstrapped with [Vite](https://vitejs.dev/).
+![](./docs/grid-world.jpg)
 
-## Learn More
+[Documentation and dev process description](https://max.patii.uk/projects/tetris-react)
 
-s You can learn more in the [Vite guides](https://vitejs.dev/guide/).
+While playing, enjoy a curated playlist from an award-winning musical artist [Hydelic](https://open.spotify.com/artist/6agnjQgwC8fwGFsM6NKSaH).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Installation
+
+- Clone this repository:
+
+  ```sh
+  git clone https://github.com/maxxxxxdlp/arcgis-tetris/
+  ```
+
+- Install dependencies:
+
+  ```sh
+  npm install
+  ```
+
+- Run the app:
+
+  ```sh
+  # For Development:
+  npm run dev
+  # For Production:
+  npm run build && npm run start
+  ```
+
+## Credits
+
+- Inspired by [Tetris Effect](https://youtu.be/PFVL6t8IHE8?si=qjVQxbNN9RQQmnud&t=21)
+- In-game music composed by [Hydelic](https://open.spotify.com/artist/6agnjQgwC8fwGFsM6NKSaH)
+- Boilerplate code based on [jsapi-resourcces/esm-samples](https://github.com/Esri/jsapi-resources/tree/main/esm-samples)
