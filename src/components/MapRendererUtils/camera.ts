@@ -15,42 +15,6 @@ export type Camera = {
   readonly blockPosition: number;
 };
 
-/*window._canceled = false;
-window._rate = async (from, to, change = 10, speed = 100, callback) => {
-  for (let i = from; i <= to; i += change) {
-    callback(i);
-    await new Promise((resolve) => setTimeout(resolve, speed));
-    if (window._canceled) return;
-  }
-};
-
-window._move = (angle: number, dx = 0, dy = 0, dh = 60, distance = 2000) => {
-  const centerPoint = new Point({
-    spatialReference: {
-      wkid: 102_100,
-    },
-    x: -8_238_833 + dx,
-    y: 4_969_413 + dy,
-    z: dh,
-  });
-
-  const { x, y } = angleToCoordinates(angle, distance);
-  const cameraStart = centerPoint.clone();
-  cameraStart.x += x;
-  cameraStart.y += y;
-
-  window._.view.goTo(
-    new ArcGisCamera({
-      position: cameraStart,
-      heading: 270 - angle,
-      tilt: 90,
-    }),
-    {
-      animate: false,
-    },
-  );
-};*/
-
 const angleSystem = 270;
 
 export function getCameras(type: Camera['type']): Camera {
