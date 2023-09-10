@@ -13,7 +13,7 @@ import { useEffects } from './useEffects';
 import { GameAside } from '../Renderers/GameAside';
 
 const mapRenderer = (cameraType: Camera['type']) =>
-  function MapRenderer({ isPaused, board, nextShape, score }: RendererProps) {
+  function MapRenderer({ isPaused, board, nextShapes, score }: RendererProps) {
     const camera = React.useMemo(() => getCameras(cameraType), [cameraType]);
 
     const [mapContainer, setMap] = React.useState<HTMLDivElement | null>(null);
@@ -72,7 +72,7 @@ const mapRenderer = (cameraType: Camera['type']) =>
       <>
         <div className="w-full h-full" ref={setMap} />
         <div className="absolute top-0 right-0 drop-shadow-[0_1px_2px_#000]">
-          <GameAside score={score} nextShape={nextShape} />
+          <GameAside score={score} nextShapes={nextShapes} />
         </div>
       </>
     );

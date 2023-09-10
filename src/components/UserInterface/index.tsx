@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { initialSpeed, scoreMultiplier } from '../../config';
+import { initialSpeed, scoreMultiplier, shapeRandomizer } from '../../config';
 import { useGameState } from '../../hooks/useCache';
 import type { IR } from '../../lib/types';
 import { RendererPick } from '../Renderers';
@@ -79,7 +79,9 @@ function DisplayRenderer({
   readonly onGameOver: (score: number) => void;
   readonly onChangeMap: () => void;
 }): JSX.Element {
-  const [state, setState] = React.useState(reducers.initial);
+  const [state, setState] = React.useState(() =>
+    reducers.initial(Array.from({ length: 5 }, shapeRandomizer)),
+  );
   const stateRef = React.useRef(state);
   stateRef.current = state;
 
@@ -98,7 +100,7 @@ function DisplayRenderer({
       const { isGameOver = false, ...newState } = reducers.gravity(
         stateRef.current,
         // Need to give a seed here to keep the reducer pure
-        Math.floor(Math.random() * 100),
+        shapeRandomizer(),
       );
       if (isGameOver) handleGameOver(stateRef.current.score);
       setState(newState);
@@ -115,7 +117,7 @@ function DisplayRenderer({
 
   React.useEffect(() => {
     if (isGameOver) return undefined;
-    setState(reducers.initial);
+    setState(reducers.initial(Array.from({ length: 5 }, shapeRandomizer)));
 
     document.addEventListener('keydown', captureKeyDown, { capture: true });
     function captureKeyDown(event: KeyboardEvent): void {
@@ -174,7 +176,7 @@ function DisplayRenderer({
     <div className="flex items-center justify-center w-screen h-screen text-white bg-black">
       <Renderer
         board={state.board}
-        nextShape={state.nextShape}
+        nextShapes={state.nextShapes}
         score={state.score}
         isPaused={state.isPaused || isGameOver}
       />

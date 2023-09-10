@@ -10,7 +10,7 @@ import { GameAside } from '../Renderers/GameAside';
 export function GridRenderer({
   board,
   score,
-  nextShape,
+  nextShapes,
 }: RendererProps): JSX.Element {
   return (
     <div
@@ -22,7 +22,7 @@ export function GridRenderer({
     >
       <span />
       <Board board={board} />
-      <GameAside score={score} nextShape={nextShape} />
+      <GameAside score={score} nextShapes={nextShapes} />
     </div>
   );
 }

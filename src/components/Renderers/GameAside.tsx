@@ -7,8 +7,8 @@ import { RendererProps } from './types';
 
 export function GameAside({
   score,
-  nextShape,
-}: Pick<RendererProps, 'score' | 'nextShape'>): JSX.Element {
+  nextShapes,
+}: Pick<RendererProps, 'score' | 'nextShapes'>): JSX.Element {
   const [bestScore] = useBestScore();
   return (
     <div className="p-2 overflow-hidden">
@@ -19,10 +19,10 @@ export function GameAside({
         </span>
       </span>
       <br />
-      {nextShape !== '_' && (
-        <span className="pt-2 text-4xl">
-          {localization.nextShape}{' '}
+      <span className="pt-2 text-4xl font-mono">
+        {nextShapes.map((nextShape, index) => (
           <span
+            key={index}
             style={{
               color: hueComponentsToColor(shapes[nextShape].color),
               colorScheme: 'white only',
@@ -30,8 +30,8 @@ export function GameAside({
           >
             {nextShape}
           </span>
-        </span>
-      )}
+        ))}
+      </span>
     </div>
   );
 }

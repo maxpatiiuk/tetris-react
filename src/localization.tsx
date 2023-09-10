@@ -14,7 +14,6 @@ export const localization = {
   yourScore: 'Your score was: ',
   yourBestScore: 'Your best score is: ',
   playAgain: 'Play again?',
-  nextShape: 'Next Shape: ',
   saveGame: 'Save game',
   loadGame: 'Load game',
   panoramaRenderer: 'Panorama World',
