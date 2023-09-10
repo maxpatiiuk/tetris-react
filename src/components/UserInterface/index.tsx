@@ -93,7 +93,6 @@ function DisplayRenderer({
   refIsPlaced.current = isPlaced;
 
   // FIXME: make shapes more fare
-  // FIXME: reset camera after restart
   React.useEffect(() => {
     if (isGameOver) return undefined;
     function gameLoop(): void {
