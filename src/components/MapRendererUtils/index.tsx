@@ -17,7 +17,7 @@ export function useMovement(
 ): void {
   const controls = React.useMemo(
     () => (view === undefined ? undefined : startMovement(view, camera)),
-    [view, camera.type],
+    [view, camera],
   );
 
   const isAnimated = camera.type === 'animated';
