@@ -93,6 +93,7 @@ const weatherGenerators: RA<
     }),
   () =>
     new FoggyWeather({
-      fogStrength: Math.random(),
+      // Fog 1 is too much - can't see the board at all
+      fogStrength: Math.min(Math.random(), 0.9),
     }),
 ];
