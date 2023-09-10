@@ -27,3 +27,23 @@ export const hueComponentsToColor = ([
   saturation,
   luminosity,
 ]: HueComponents) => `hsl(${hue} ${saturation}% ${luminosity}%)`;
+
+/**
+ * Regular Math.random() was used for getting random shape, but the randomness
+ * was often not distributed fairly - the same shape occurred too many times in
+ * a row, or a shape (I) didn't occur enough.
+ */
+export function fairRandomItem<T>(array: readonly T[], fairness = 10): () => T {
+  let possibilities = array.flatMap((item) =>
+    Array.from({ length: fairness }, () => item),
+  );
+  return (): T => {
+    const item = randomArrayItem(possibilities);
+    const index = possibilities.indexOf(item);
+    possibilities.splice(index, 1, randomArrayItem(array));
+    return item;
+  };
+}
+
+export const randomArrayItem = <T>(array: RA<T>): T =>
+  array[Math.floor(Math.random() * array.length)];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RA } from '../../lib/types';
+import { fairRandomItem } from '../../lib/utils';
 
 const songs = Object.values({
   '1984': '1YjETQrefLDU6gUdVdjkxK',
@@ -51,20 +51,8 @@ const songs = Object.values({
   'Look Up': '01YImcxm3FqgmFSTvDagLc',
   Unfold: '1FzV8n4LhHE06a2lopplyj',
 });
-
-const dontRepeatLastSongs = 3;
+const songRandomizer = fairRandomItem(songs, 1);
 
 export function useSong(): () => string {
-  const recentlyPlayed = React.useRef<RA<string>>([]);
-  return React.useCallback(() => {
-    const candidates = songs.filter(
-      (song) => !recentlyPlayed.current.includes(song),
-    );
-    const song = candidates[Math.floor(Math.random() * candidates.length)];
-    recentlyPlayed.current = [
-      ...recentlyPlayed.current.slice(1, dontRepeatLastSongs),
-      song,
-    ];
-    return `spotify:track:${song}`;
-  }, []);
+  return React.useCallback(() => `spotify:track:${songRandomizer()}`, []);
 }

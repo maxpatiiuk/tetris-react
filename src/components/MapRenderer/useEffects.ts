@@ -13,7 +13,7 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import React from 'react';
 import { blockSize } from '../MapRendererUtils/config';
 import { buildColor } from '../MapRendererUtils/box';
-import { expose } from '../../lib/utils';
+import { expose, fairRandomItem } from '../../lib/utils';
 import { RA } from '../../lib/types';
 
 /* Add special effects to the map in response to score change  */
@@ -54,15 +54,18 @@ const getRenderer = (hue = Math.floor(Math.random() * 365)): SimpleRenderer =>
     }),
   });
 
+const timeRandomizer = fairRandomItem(
+  Array.from({ length: 24 }, (_, index) => index),
+);
+
 function updateTime(view: SceneView): void {
   const date = new Date();
-  date.setHours(Math.floor(Math.random() * 24));
+  date.setHours(timeRandomizer());
   (view.environment.lighting as SunLighting).date = date;
 }
 
 function updateWeather(view: SceneView): void {
-  view.environment.weather =
-    weatherGenerators[Math.floor(Math.random() * weatherGenerators.length)]();
+  view.environment.weather = weatherRandomizer()();
 }
 
 const weatherGenerators: RA<
@@ -97,3 +100,5 @@ const weatherGenerators: RA<
       fogStrength: Math.min(Math.random(), 0.9),
     }),
 ];
+
+const weatherRandomizer = fairRandomItem(weatherGenerators);
