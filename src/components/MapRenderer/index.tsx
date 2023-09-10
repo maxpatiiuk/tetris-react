@@ -45,8 +45,8 @@ const mapRenderer = (cameraType: Camera['type']) =>
       view.ui.remove(view.ui.getComponents());
 
       view.when(() => {
-        // Disable labels
-        view.map.allLayers.at(2).visible = false;
+        const labelsLayer = view.map.allLayers.find(({title})=>title==='Places and Labels')
+        if(labelsLayer) labelsLayer.visible = false;
 
         setView(view);
       });
