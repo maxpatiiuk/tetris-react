@@ -6,7 +6,7 @@ import type GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SketchEdges3D from '@arcgis/core/symbols/edges/SketchEdges3D';
 import SolidEdges3D from '@arcgis/core/symbols/edges/SolidEdges3D';
 import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
-import MeshSymbol3d from '@arcgis/core/symbols/MeshSymbol3d';
+import MeshSymbol3D from '@arcgis/core/symbols/MeshSymbol3D';
 
 import { Camera } from './camera';
 import { blockSize } from './config';
@@ -78,7 +78,7 @@ function getSymbol(
   shape: Shape,
   sketchEdges: boolean,
 ): GraphicWithType['symbol'] {
-  const symbol = new MeshSymbol3d({
+  const symbol = new MeshSymbol3D({
     symbolLayers: [
       new FillSymbol3DLayer({
         material: {
