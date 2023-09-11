@@ -1,5 +1,5 @@
 import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer';
-import MeshSymbol3D from '@arcgis/core/symbols/MeshSymbol3d';
+import MeshSymbol3D from '@arcgis/core/symbols/MeshSymbol3D';
 import SketchEdges3D from '@arcgis/core/symbols/edges/SketchEdges3D';
 import type SceneLayer from '@arcgis/core/layers/SceneLayer';
 import SceneView from '@arcgis/core/views/SceneView';
@@ -32,8 +32,8 @@ function updateEnvironment(view: SceneView) {
 }
 
 function updateRenderer(view: SceneView): void {
-  const layer = view.map.allLayers.find(({title})=>title === 'Buildings');
-  if(layer !== undefined) (layer as SceneLayer).renderer = getRenderer();
+  const layer = view.map.allLayers.find(({ title }) => title === 'Buildings');
+  if (layer !== undefined) (layer as SceneLayer).renderer = getRenderer();
 }
 
 const getRenderer = (hue = Math.floor(Math.random() * 365)): SimpleRenderer =>
