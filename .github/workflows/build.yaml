@@ -34,11 +34,15 @@ jobs:
       - name: Typecheck
         run: npx tsc
 
+      - name: Extract repository name
+        run: echo "REPOSITORY_NAME=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_ENV
+
       - name: Build
-        run: npm run build -- --base /${{ github.repository }}/
+        run: npm run build -- --base /${{ env.REPOSITORY_NAME }}/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true
