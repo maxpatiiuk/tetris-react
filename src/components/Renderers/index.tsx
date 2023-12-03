@@ -38,7 +38,7 @@ export function RendererPick({
       <div className="flex-1 flex justify-end items-end text-end">
         <span>
           <a
-            href="https://github.com/maxxxxxdlp/tetris-react/"
+            href="https://github.com/maxpatiiuk/tetris-react/"
             className="text-blue-500"
             target="_blank"
             rel="noopener"

@@ -35,7 +35,7 @@ While playing, enjoy a curated playlist from an award-winning musical artist [Hy
 - Clone this repository:
 
   ```sh
-  git clone https://github.com/maxxxxxdlp/tetris-react/
+  git clone https://github.com/maxpatiiuk/tetris-react/
   ```
 
 - Install dependencies:
